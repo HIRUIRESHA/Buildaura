@@ -1,79 +1,9 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Building2, User, Mail, Lock, Phone, MapPin, Users, Briefcase, CheckCircle } from 'lucide-react'
-
-
+import { Building2, User, CheckCircle } from 'lucide-react';
 
 export default function SignupPage() {
-  const [step, setStep] = useState('select')
-  const [registrationType, setRegistrationType] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  
-  const [companyForm, setCompanyForm] = useState({
-    companyName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    phoneNumber: '',
-    address: '',
-    companySize: '',
-    industry: ''
-  })
-
-  const [userForm, setUserForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    phoneNumber: '',
-    role: '',
-    company: ''
-  })
-
-  const generateUserId = () => {
-    return 'BA' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 4).toUpperCase()
-  }
-
-  const handleRegistrationTypeSelect = (type) => {
-    setRegistrationType(type)
-    setStep('register')
-  }
-
-  const handleBack = () => {
-    setStep('select')
-    setRegistrationType(null)
-  }
-
-  const handleCompanySubmit = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const userId = generateUserId()
-    console.log('Company Registration:', { ...companyForm, userId })
-    alert(`Company registered successfully! Your Company ID: ${userId}`)
-    setIsLoading(false)
-  }
-
-  const handleUserSubmit = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const userId = generateUserId()
-    console.log('User Registration:', { ...userForm, userId })
-    alert(`User registered successfully! Your User ID: ${userId}`)
-    setIsLoading(false)
-  }
-
-  if (step === 'select') {
-    return (
+  return (
     <div className="min-h-screen bg-gradient-to-br from-orange-200 via-orange-300 to-orange-400 p-4 flex items-center justify-center">
       <div className="w-full max-w-4xl">
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden">
@@ -115,7 +45,7 @@ export default function SignupPage() {
               {/* User Registration Card */}
               <Link
                 to="/userregister"
-                className="group h-full border-2 border-gray-200 hover:border-orange-400 transition-all duration-300 hover:shadow-xl hover:scale-105 rounded-3xl flex flex-col p-8 text-center no-underline"
+                className="group h-full border-2 border-gray-200 hover:border-blue-400 transition-all duration-300 hover:shadow-xl hover:scale-105 rounded-3xl flex flex-col p-8 text-center no-underline"
               >
                 <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                   <User className="w-10 h-10 text-white" />
@@ -154,8 +84,5 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
-  )
-  }
-
-  
+  );
 }

@@ -1,0 +1,73 @@
+// src/services/companyServices.js
+const API_URL = "http://localhost:5000/api/companies"; // Backend URL for companies
+
+// 1️⃣ Register company
+export const registerCompany = async (companyData) => {
+  try {
+    const response = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(companyData),
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("Register company error:", err);
+    return { success: false, message: "Server error" };
+  }
+};
+
+// 2️⃣ Delete company (admin)
+export const deleteCompany = async (companyId) => {
+  try {
+    const response = await fetch(`${API_URL}/delete/${companyId}`, {
+      method: "DELETE",
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("Delete company error:", err);
+    return { success: false, message: "Server error" };
+  }
+};
+
+// 3️⃣ Edit company (admin)
+export const editCompany = async (companyId, updatedData) => {
+  try {
+    const response = await fetch(`${API_URL}/edit/${companyId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedData),
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("Edit company error:", err);
+    return { success: false, message: "Server error" };
+  }
+};
+
+// 4️⃣ Get all companies (admin dashboard)
+export const getCompanies = async () => {
+  try {
+    const response = await fetch(`${API_URL}/all`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("Get companies error:", err);
+    return { success: false, message: "Server error", companies: [] };
+  }
+};
+
+// 5️⃣ Get company by companyId
+export const getCompanyById = async (companyId) => {
+  try {
+    const response = await fetch(`${API_URL}/get/${companyId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("Get company by ID error:", err);
+    return { success: false, message: "Server error", company: null };
+  }
+};

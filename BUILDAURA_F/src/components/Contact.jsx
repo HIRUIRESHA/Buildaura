@@ -104,7 +104,7 @@ function Contact() {
         </div>
 
         {/* Contact Form Section */}
-        <div className="bg-gray-50 py-16">
+        {/* <div className="bg-gray-50 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
@@ -232,7 +232,7 @@ function Contact() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Business Hours Section */}
         <div className="py-16 bg-white">

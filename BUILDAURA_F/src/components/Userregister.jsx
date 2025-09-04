@@ -1,16 +1,10 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  User,
-  Mail,
-  Lock,
-  Phone,
-  Briefcase,
-  Building2,
-  ArrowLeft,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function UserRegister() {
+const API_URL = "http://localhost:5000/api/users";
+const COMPANY_API_URL = "http://localhost:5000/api/companies/all"; // fetch all companies
+
+function UserRegister() {
   const navigate = useNavigate();
 
   const [userForm, setUserForm] = useState({
@@ -20,264 +14,185 @@ export default function UserRegister() {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
-    role: "",
-    company: "",
+    role: "client",
+    companyCustomId: "", // store MongoDB _id here
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [companies, setCompanies] = useState([]);
 
-  const handleBack = () => {
-    navigate("/signup"); // Adjust if needed
+  // Fetch companies for dropdown
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const res = await fetch(COMPANY_API_URL);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.companies)) {
+          setCompanies(data.companies);
+        } else {
+          setCompanies([]);
+          console.error("Expected array but got:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching companies:", error);
+        setCompanies([]); // fallback to empty array
+      }
+    };
+    fetchCompanies();
+  }, []);
+
+  const handleChange = (e) => {
+    setUserForm({ ...userForm, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (userForm.password !== userForm.confirmPassword) {
-      alert("Passwords do not match!");
+      alert("❌ Passwords do not match!");
       return;
     }
 
     setIsLoading(true);
 
-    // Simulate API call delay
-    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      const res = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: userForm.firstName,
+          lastName: userForm.lastName,
+          email: userForm.email,
+          password: userForm.password,
+          phoneNumber: userForm.phoneNumber,
+          role: userForm.role === "site-engineer" ? "engineer" : "client",
+          company:
+            userForm.role === "site-engineer" ? userForm.companyCustomId : null,
+        }),
+      });
 
-    const userId =
-      "BA" +
-      Date.now().toString(36).toUpperCase() +
-      Math.random().toString(36).substr(2, 4).toUpperCase();
+      const data = await res.json();
+      console.log("Backend response:", data);
 
-    alert(`User registered successfully! Your User ID: ${userId}`);
-
-    setIsLoading(false);
+      if (res.ok) {
+        alert(
+          `✅ Registration successful! Welcome ${data.firstName}. Your User ID is ${data.userId}.`
+        );
+        navigate("/login");
+      } else {
+        alert(`❌ Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("⚠️ Server error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const isSubmitDisabled =
-    isLoading || (userForm.role === "site-engineer" && !userForm.company);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-6 flex items-center justify-center">
-      <div className="w-full max-w-4xl">
-        {/* Back Button */}
-        <div className="mb-8">
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold"
-            type="button"
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-300 to-orange-500">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          User Registration
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            value={userForm.firstName}
+            onChange={handleChange}
+            required
+            className="w-full border rounded-lg px-4 py-2"
+          />
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={userForm.lastName}
+            onChange={handleChange}
+            required
+            className="w-full border rounded-lg px-4 py-2"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={userForm.email}
+            onChange={handleChange}
+            required
+            className="w-full border rounded-lg px-4 py-2"
+          />
+          <input
+            type="text"
+            name="phoneNumber"
+            placeholder="Phone Number"
+            value={userForm.phoneNumber}
+            onChange={handleChange}
+            required
+            className="w-full border rounded-lg px-4 py-2"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={userForm.password}
+            onChange={handleChange}
+            required
+            className="w-full border rounded-lg px-4 py-2"
+          />
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={userForm.confirmPassword}
+            onChange={handleChange}
+            required
+            className="w-full border rounded-lg px-4 py-2"
+          />
+
+          <select
+            name="role"
+            value={userForm.role}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-4 py-2"
           >
-            <ArrowLeft className="w-6 h-6" />
-            Back
-          </button>
-        </div>
+            <option value="client">Client</option>
+            <option value="site-engineer">Engineer</option>
+          </select>
 
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 lg:p-12">
-          <h2 className="text-3xl font-bold mb-8 text-gray-800">
-            User Registration
-          </h2>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label
-                  htmlFor="firstName"
-                  className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-                >
-                  <User className="w-4 h-4" />
-                  First Name
-                </label>
-                <input
-                  id="firstName"
-                  value={userForm.firstName}
-                  onChange={(e) =>
-                    setUserForm({ ...userForm, firstName: e.target.value })
-                  }
-                  placeholder="Enter first name"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="lastName"
-                  className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-                >
-                  <User className="w-4 h-4" />
-                  Last Name
-                </label>
-                <input
-                  id="lastName"
-                  value={userForm.lastName}
-                  onChange={(e) =>
-                    setUserForm({ ...userForm, lastName: e.target.value })
-                  }
-                  placeholder="Enter last name"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="userEmail"
-                className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-              >
-                <Mail className="w-4 h-4" />
-                Email Address
-              </label>
-              <input
-                id="userEmail"
-                type="email"
-                value={userForm.email}
-                onChange={(e) =>
-                  setUserForm({ ...userForm, email: e.target.value })
-                }
-                placeholder="Enter your email"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label
-                  htmlFor="userPassword"
-                  className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-                >
-                  <Lock className="w-4 h-4" />
-                  Password
-                </label>
-                <input
-                  id="userPassword"
-                  type="password"
-                  value={userForm.password}
-                  onChange={(e) =>
-                    setUserForm({ ...userForm, password: e.target.value })
-                  }
-                  placeholder="Enter password"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="userConfirmPassword"
-                  className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-                >
-                  <Lock className="w-4 h-4" />
-                  Confirm Password
-                </label>
-                <input
-                  id="userConfirmPassword"
-                  type="password"
-                  value={userForm.confirmPassword}
-                  onChange={(e) =>
-                    setUserForm({ ...userForm, confirmPassword: e.target.value })
-                  }
-                  placeholder="Confirm password"
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="userPhone"
-                className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-              >
-                <Phone className="w-4 h-4" />
-                Phone Number
-              </label>
-              <input
-                id="userPhone"
-                type="tel"
-                value={userForm.phoneNumber}
-                onChange={(e) =>
-                  setUserForm({ ...userForm, phoneNumber: e.target.value })
-                }
-                placeholder="Enter phone number"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="role"
-                className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-              >
-                <Briefcase className="w-4 h-4" />
-                Role
-              </label>
-
-              <select
-                id="role"
-                value={userForm.role}
-                onChange={(e) =>
-                  setUserForm({ ...userForm, role: e.target.value, company: "" })
-                }
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              >
-                <option value="" disabled>
-                  Select your role
-                </option>
-                <option value="client">Client</option>
-                <option value="site-engineer">Site Engineer</option>
-              </select>
-            </div>
-
-            {userForm.role === "site-engineer" && (
-              <div className="space-y-2">
-                <label
-                  htmlFor="company"
-                  className="flex items-center gap-2 text-gray-700 text-sm font-medium"
-                >
-                  <Building2 className="w-4 h-4" />
-                  Company <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="company"
-                  value={userForm.company}
-                  onChange={(e) =>
-                    setUserForm({ ...userForm, company: e.target.value })
-                  }
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                >
-                  <option value="" disabled>
-                    Select your company
-                  </option>
-                  <option value="buildtech-solutions">BuildTech Solutions</option>
-                  <option value="construction-masters">Construction Masters</option>
-                  <option value="urban-builders">Urban Builders Inc.</option>
-                  <option value="premier-construction">Premier Construction Co.</option>
-                  <option value="skyline-builders">Skyline Builders</option>
-                </select>
-                <p className="text-xs text-gray-500">
-                  Site engineers must be associated with a company
-                </p>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={isSubmitDisabled}
-              className={`w-full py-4 rounded-lg font-medium text-lg shadow-lg transition-all duration-300 text-white ${
-                isSubmitDisabled
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 hover:shadow-xl"
-              }`}
+          {/* Company Dropdown */}
+          {userForm.role === "site-engineer" && (
+            <select
+              name="companyCustomId"
+              value={userForm.companyCustomId}
+              onChange={handleChange}
+              required
+              className="w-full border rounded-lg px-4 py-2"
             >
-              {isLoading ? "Creating User Account..." : "Register User"}
-            </button>
-          </form>
-        </div>
+              <option value="">Select Company</option>
+              {companies.map((company) => (
+                <option key={company._id} value={company._id}>
+                  {company.name}
+                </option>
+              ))}
+            </select>
+          )}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-orange-500 text-white font-semibold py-2 rounded-lg hover:bg-orange-600 transition"
+          >
+            {isLoading ? "Registering..." : "Register"}
+          </button>
+        </form>
       </div>
     </div>
   );
 }
+
+export default UserRegister;
