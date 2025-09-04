@@ -23,7 +23,7 @@ export default function Project() {
         onClick={() => navigate("/projectcart")}
         className="bg-orange-500 text-white px-4 py-2 rounded mb-4"
       >
-        + New Project
+        \New Project
       </button>
 
       <div className="space-y-4">
