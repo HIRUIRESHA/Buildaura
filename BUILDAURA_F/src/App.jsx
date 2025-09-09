@@ -23,9 +23,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Companysign from './components/Companysign';
 import Userregister from './components/Userregister';
-import AdminDashboard from './page/AdminDashboard';
 import AdminDash from './page/AdminDash';
-import AdminCompanyDashboard from "./page/AdminCompanyDashboard";
 import CompanyHome from "./homepages/CompanyHome";   // ✅ Import CompanyHome
 import CompanyCart from "./page/CompanyCart";        // ✅ Import CompanyCart
 import ClientHome from './homepages/ClientHome';
@@ -33,6 +31,8 @@ import EngHome from './homepages/EngHome';
 import Project from './page/Project';
 import ProjectCart from "./page/ProjectCart"; 
 import CompanyProject from './page/CompanyProject';
+import EngDash from './page/EngDash';
+import CompanyDash from './page/CompanyDash';
 
 
 function App() {
@@ -54,14 +54,7 @@ function App() {
 
 
           {/* Admin Routes */}
-          <Route 
-            path="/admin/users" 
-            element={<RequireRole role="admin"><AdminDashboard /></RequireRole>} 
-          />
-          <Route 
-            path="/admin/companies" 
-            element={<RequireRole role="admin"><AdminCompanyDashboard /></RequireRole>} 
-          />
+          
           <Route 
             path="/admin/dash" 
             element={<RequireRole role="admin"><AdminDash /></RequireRole>} 
@@ -71,6 +64,10 @@ function App() {
           <Route 
             path="/company/home" 
             element={<RequireRole role="company"><CompanyHome /></RequireRole>} 
+          />
+          <Route 
+            path="/company/dash" 
+            element={<RequireRole role="company"><CompanyDash /></RequireRole>} 
           />
           <Route 
             path="/companycart" 
@@ -85,6 +82,10 @@ function App() {
           <Route 
             path="/eng/home" 
             element={<RequireRole role="engineer"><EngHome /></RequireRole>} 
+          />
+          <Route 
+            path="/eng/dash" 
+            element={<RequireRole role="engineer"><EngDash /></RequireRole>} 
           />
 
 

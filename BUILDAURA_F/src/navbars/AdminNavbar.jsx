@@ -21,8 +21,6 @@ export default function AdminNavbar() {
 
   // Admin links
   const links = [
-    { name: 'Users', to: '/admin/users' },
-    { name: 'Companies', to: '/admin/companies' },
     { name: 'Dashboard', to: '/admin/dash' },
   ];
 

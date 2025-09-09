@@ -34,6 +34,7 @@ export default function CompanyNavbar() {
   // Company links
   const links = [
     { name: 'Home', to: '/company/home' },
+    { name: 'Dashboard', to: '/company/dash' },
     { name: 'Projects', to: '/company/projects' },
     { name: 'Employees', to: '/company/employees' },
   ];

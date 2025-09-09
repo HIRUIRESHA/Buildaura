@@ -21,7 +21,7 @@ export default function EngineerNavbar() {
 
   // Engineer links
   const links = [
-    { name: 'Dashboard', to: '/engineer/dashboard' },
+    { name: 'Dashboard', to: '/eng/dash' },
     { name: 'Tasks', to: '/engineer/tasks' },
     { name: 'Projects', to: '/engineer/projects' },
   ];
