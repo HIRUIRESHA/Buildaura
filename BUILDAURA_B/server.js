@@ -2,14 +2,16 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import connectDB from './configs/mongodb.js';
+import { verifyWebhook } from '@clerk/backend/webhooks';
+import { Buffer } from 'node:buffer';
 
 // Routes
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
-import companyRoutes from './routes/companyRoutes.js'; // Added company routes
+import companyRoutes from './routes/companyRoutes.js';
 import companycartRoutes from './routes/companycartRoutes.js';
 import projectcartRoutes from './routes/projectcartRoutes.js';
-
+import clientRoutes from "./routes/clients.js";
 
 const app = express();
 
@@ -18,28 +20,55 @@ connectDB()
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('DB connection error:', err));
 
+// Clerk Webhook Route
+app.post('/webhooks/clerk', express.raw({ type: 'application/json' }), (req, res) => {
+  try {
+    const webhookSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET;
+    const signature = req.headers['webhook-signature'];
+
+    if (!webhookSecret || !signature) {
+      throw new Error('Webhook secret or signature missing');
+    }
+
+    const event = verifyWebhook({
+      payload: req.body,      // raw body from express.raw()
+      secret: webhookSecret,  // your webhook signing secret from .env
+      header: signature,
+    });
+
+    console.log('Clerk Webhook Event:', event);
+
+    // Handle webhook events here (user.created, user.updated, etc.)
+    res.status(200).json({ received: true });
+  } catch (err) {
+    console.error('Clerk webhook error:', err);
+    res.status(400).json({ error: 'Invalid webhook' });
+  }
+});
+
 // Middleware
 app.use(cors());
-app.use(express.json()); // parse JSON body
-app.use(express.urlencoded({ extended: true })); // parse URL-encoded body if needed
-app.use('/uploads', express.static('uploads')); // serve uploaded images
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
 
 // API Routes
-app.use('/api/users', userRoutes);         // user routes
-app.use('/api/admin', adminRoutes);        // admin routes
-app.use('/api/companies', companyRoutes);  // company routes (login, register, etc.)
-app.use('/api/companycarts', companycartRoutes);  // company cart routes
-app.use('/api/projectcart', projectcartRoutes);  // project cart routes
+app.use('/api/users', userRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/companies', companyRoutes);
+app.use('/api/companycarts', companycartRoutes);
+app.use('/api/projectcart', projectcartRoutes);
+app.use('/api/clients', clientRoutes);
 
 // Test route
 app.get('/', (req, res) => res.send('API Working'));
 
-// 404 Handler for unknown routes
+// 404 Handler
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });
 });
 
-// Global error handler (optional)
+// Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, message: 'Server error' });

@@ -24,6 +24,7 @@ import Signup from './components/Signup';
 import Companysign from './components/Companysign';
 import Userregister from './components/Userregister';
 import AdminDashboard from './page/AdminDashboard';
+import AdminDash from './page/AdminDash';
 import AdminCompanyDashboard from "./page/AdminCompanyDashboard";
 import CompanyHome from "./homepages/CompanyHome";   // ✅ Import CompanyHome
 import CompanyCart from "./page/CompanyCart";        // ✅ Import CompanyCart
@@ -60,6 +61,10 @@ function App() {
           <Route 
             path="/admin/companies" 
             element={<RequireRole role="admin"><AdminCompanyDashboard /></RequireRole>} 
+          />
+          <Route 
+            path="/admin/dash" 
+            element={<RequireRole role="admin"><AdminDash /></RequireRole>} 
           />
 
           {/* Company Routes */}

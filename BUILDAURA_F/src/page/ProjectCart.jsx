@@ -3,40 +3,60 @@ import { useNavigate } from "react-router-dom";
 import { submitProject } from "../services/projectCartServices";
 
 const COMPANY_API_URL = "http://localhost:5000/api/companies/all";
+const CLIENT_API_URL = "http://localhost:5000/api/clients/all";
 
 function ProjectCart() {
   const navigate = useNavigate();
-
-  // ✅ Get logged-in client ID from localStorage
-  const clientId = localStorage.getItem("userId"); 
-
   const [form, setForm] = useState({
     projectName: "",
-    email: "",
-    phoneNumber: "",
     startDate: "",
     budget: "",
     description: "",
     projectType: "residential",
     companyId: "",
+    clientId: "",
+    status: "pending",
   });
 
   const [companies, setCompanies] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadingCompanies, setLoadingCompanies] = useState(true);
+  const [loadingClients, setLoadingClients] = useState(true);
+  const [error, setError] = useState("");
 
-  // Fetch companies for dropdown
+  // Fetch companies
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
         const res = await fetch(COMPANY_API_URL);
         const data = await res.json();
-        if (data.success) {
-          setCompanies(data.companies);
-        }
+        if (data.success) setCompanies(data.companies);
+        else setError("Failed to fetch companies");
       } catch (err) {
-        console.error("Error fetching companies:", err.message);
+        setError("Error fetching companies: " + err.message);
+      } finally {
+        setLoadingCompanies(false);
       }
     };
     fetchCompanies();
+  }, []);
+
+  // Fetch clients
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const res = await fetch(CLIENT_API_URL);
+        const data = await res.json();
+        if (data.success) setClients(data.clients);
+        else setError("Failed to fetch clients");
+      } catch (err) {
+        setError("Error fetching clients: " + err.message);
+      } finally {
+        setLoadingClients(false);
+      }
+    };
+    fetchClients();
   }, []);
 
   const handleChange = (e) => {
@@ -45,125 +65,145 @@ function ProjectCart() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
-    if (!clientId) {
-      alert("⚠️ Client ID not found. Please login again.");
+    if (!form.clientId) {
+      setError("⚠️ Please select a client.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!form.companyId) {
+      setError("⚠️ Please select a company.");
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      const projectData = { ...form, clientId }; // attach clientId
-      const res = await submitProject(projectData);
-
+      const res = await submitProject(form);
       if (res.success) {
-        alert("✅ Project submitted successfully!");
-        navigate("/project");
+        navigate("/project", { state: { refresh: true } });
       } else {
-        alert("❌ Failed to submit project");
+        setError("❌ Failed to submit project");
       }
     } catch (err) {
-      alert("⚠️ " + err.message);
+      setError("⚠️ " + err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Submit a New Project</h1>
+      <h1 className="text-2xl font-bold mb-6">Submit a New Project</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="projectName"
-          placeholder="Project Name"
-          value={form.projectName}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-          required
-        />
+      {(loadingCompanies || loadingClients) ? (
+        <p>Loading data...</p>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && <p className="text-red-500">{error}</p>}
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Client Email"
-          value={form.email}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-          required
-        />
+          <input
+            type="text"
+            name="projectName"
+            placeholder="Project Name"
+            value={form.projectName}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            required
+            disabled={isSubmitting}
+          />
 
-        <input
-          type="text"
-          name="phoneNumber"
-          placeholder="Client Phone"
-          value={form.phoneNumber}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-          required
-        />
+          <select
+            name="clientId"
+            value={form.clientId}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            required
+            disabled={isSubmitting}
+          >
+            <option value="">Select Client</option>
+            {clients.map((client) => (
+              <option key={client._id} value={client._id}>
+                {client.firstName} {client.lastName}
+              </option>
+            ))}
+          </select>
 
-        <input
-          type="date"
-          name="startDate"
-          value={form.startDate}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-          required
-        />
+          <input
+            type="date"
+            name="startDate"
+            value={form.startDate}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            required
+            disabled={isSubmitting}
+          />
 
-        <input
-          type="number"
-          name="budget"
-          placeholder="Budget"
-          value={form.budget}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-          required
-        />
+          <input
+            type="number"
+            name="budget"
+            placeholder="Budget"
+            value={form.budget}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            required
+            disabled={isSubmitting}
+          />
 
-        <textarea
-          name="description"
-          placeholder="Project Description"
-          value={form.description}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-          required
-        />
+          <textarea
+            name="description"
+            placeholder="Project Description"
+            value={form.description}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            required
+            rows="4"
+            disabled={isSubmitting}
+          />
 
-        <select
-          name="projectType"
-          value={form.projectType}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-        >
-          <option value="residential">Residential</option>
-          <option value="commercial">Commercial</option>
-          <option value="industrial">Industrial</option>
-          <option value="infrastructure">Infrastructure</option>
-          <option value="renovation">Renovation</option>
-        </select>
+          <select
+            name="projectType"
+            value={form.projectType}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            disabled={isSubmitting}
+          >
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+            <option value="industrial">Industrial</option>
+            <option value="infrastructure">Infrastructure</option>
+            <option value="renovation">Renovation</option>
+          </select>
 
-        <select
-          name="companyId"
-          value={form.companyId}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded-lg"
-          required
-        >
-          <option value="">Select Company</option>
-          {companies.map((c) => (
-            <option key={c._id} value={c._id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+          <select
+            name="companyId"
+            value={form.companyId}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+            required
+            disabled={isSubmitting}
+          >
+            <option value="">Select Company</option>
+            {companies.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
 
-        <button
-          type="submit"
-          className="bg-orange-500 text-white px-4 py-2 rounded-lg w-full"
-        >
-          Submit Project
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`bg-orange-500 text-white px-4 py-2 rounded-lg w-full transition ${
+              isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:bg-orange-600"
+            }`}
+          >
+            {isSubmitting ? "Submitting..." : "Submit Project"}
+          </button>
+        </form>
+      )}
     </div>
   );
 }

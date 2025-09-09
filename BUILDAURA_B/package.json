@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@clerk/backend": "^2.12.1",
+    "@clerk/clerk-sdk-node": "^5.1.6",
     "@clerk/express": "^1.7.17",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
@@ -21,6 +23,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.1",
+    "mongoose-paginate-v2": "^1.9.1",
     "multer": "^2.0.2",
     "streamifier": "^0.1.1",
     "stripe": "^18.4.0",
