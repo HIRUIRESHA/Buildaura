@@ -1,4 +1,3 @@
-// services/projectCartServices.js
 const API_URL = "http://localhost:5000/api/projectcart";
 
 // ======================
@@ -6,7 +5,10 @@ const API_URL = "http://localhost:5000/api/projectcart";
 // ======================
 export const submitProject = async (projectData) => {
   try {
-    const clientId = projectData.clientId || localStorage.getItem("userId");
+    const clientId =
+      projectData.clientId ||
+      localStorage.getItem("userId") ||
+      localStorage.getItem("_id");
     const companyId = projectData.companyId || localStorage.getItem("companyId");
 
     if (!clientId) throw new Error("Client ID is required");
@@ -14,22 +16,19 @@ export const submitProject = async (projectData) => {
 
     const res = await fetch(`${API_URL}/submit`, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        "x-user-id": clientId // Send in headers for middleware
+        "x-user-id": clientId,
       },
-      body: JSON.stringify({ 
-        ...projectData, 
+      body: JSON.stringify({
+        ...projectData,
         clientId,
-        companyId 
+        companyId,
       }),
     });
 
     const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to submit project: ${res.status} ${res.statusText}`);
-    }
+    if (!res.ok) throw new Error(data.message || `Failed to submit project`);
 
     return data;
   } catch (err) {
@@ -43,33 +42,23 @@ export const submitProject = async (projectData) => {
 // ======================
 export const getClientProjects = async (clientId) => {
   try {
-    // Get the ID from parameter or localStorage
-    const id = clientId || localStorage.getItem("userId") || localStorage.getItem("userid");
-    
-    if (!id) {
-      console.error("❌ No client ID provided");
-      throw new Error("Invalid Client ID");
-    }
+    const id =
+      clientId ||
+      JSON.parse(localStorage.getItem("auth"))?.user?.userId ||
+      JSON.parse(localStorage.getItem("auth"))?.user?._id;
 
-    console.log("📞 Fetching projects for client ID:", id);
-    
+    if (!id) throw new Error("Invalid Client ID");
+
     const res = await fetch(`${API_URL}/client/${encodeURIComponent(id)}`, {
-      headers: {
-        "x-user-id": id,
-        "Content-Type": "application/json"
-      }
+      headers: { "x-user-id": id, "Content-Type": "application/json" },
     });
-    
-    const data = await res.json();
-    console.log("📨 API response:", data);
 
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to fetch client projects: ${res.status}`);
-    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch client projects");
 
     return data;
   } catch (err) {
-    console.error("❌ getClientProjects error:", err.message);
+    console.error("getClientProjects error:", err.message);
     throw err;
   }
 };
@@ -79,21 +68,15 @@ export const getClientProjects = async (clientId) => {
 // ======================
 export const getCompanyProjects = async (companyId) => {
   try {
-    const id = companyId || localStorage.getItem("_id");
-
+    const id = companyId || JSON.parse(localStorage.getItem("auth"))?.user?._id;
     if (!id) throw new Error("Invalid Company ID");
 
-    const res = await fetch(`${API_URL}/company/${id}`, {
-      headers: {
-        "x-company-id": id // Send in headers for middleware
-      }
+    const res = await fetch(`${API_URL}/company/${encodeURIComponent(id)}`, {
+      headers: { "x-company-id": id },
     });
-    
-    const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to fetch company projects: ${res.status} ${res.statusText}`);
-    }
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch company projects");
 
     return data;
   } catch (err) {
@@ -107,25 +90,18 @@ export const getCompanyProjects = async (companyId) => {
 // ======================
 export const getAllProjects = async (filters = {}) => {
   try {
-    // Build query string from filters
-    const queryParams = new URLSearchParams();
-    if (filters.page) queryParams.append('page', filters.page);
-    if (filters.limit) queryParams.append('limit', filters.limit);
-    if (filters.status) queryParams.append('status', filters.status);
-    if (filters.clientId) queryParams.append('clientId', filters.clientId);
-    if (filters.companyId) queryParams.append('companyId', filters.companyId);
+    // Ensure we use /all route for admin
+    const query = new URLSearchParams(filters).toString();
+    const url = query ? `${API_URL}/all?${query}` : `${API_URL}/all`;
 
-    const queryString = queryParams.toString();
-    const url = queryString ? `${API_URL}?${queryString}` : API_URL;
+    const res = await fetch(url, {
+      headers: { "Content-Type": "application/json" },
+    });
 
-    const res = await fetch(url);
     const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch all projects");
 
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to fetch projects: ${res.status} ${res.statusText}`);
-    }
-
-    return data;
+    return Array.isArray(data) ? data : data.projects || [];
   } catch (err) {
     console.error("getAllProjects error:", err.message);
     throw err;
@@ -133,19 +109,15 @@ export const getAllProjects = async (filters = {}) => {
 };
 
 // ======================
-// Get single project by ID
+// Get project by ID
 // ======================
 export const getProjectById = async (projectId) => {
   try {
-    if (!projectId) throw new Error("Project ID is required");
-
-    const res = await fetch(`${API_URL}/${projectId}`);
+    const res = await fetch(`${API_URL}/${projectId}`, {
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to fetch project: ${res.status} ${res.statusText}`);
-    }
-
+    if (!res.ok) throw new Error(data.message || "Failed to fetch project");
     return data;
   } catch (err) {
     console.error("getProjectById error:", err.message);
@@ -158,30 +130,13 @@ export const getProjectById = async (projectId) => {
 // ======================
 export const updateProjectStatus = async (projectId, status, notes = "") => {
   try {
-    if (!projectId) throw new Error("Project ID is required");
-    if (!status) throw new Error("Status is required");
-
-    const changedBy = localStorage.getItem("userId") || "system";
-
     const res = await fetch(`${API_URL}/${projectId}/status`, {
       method: "PUT",
-      headers: { 
-        "Content-Type": "application/json",
-        "x-user-id": changedBy // Send in headers for middleware
-      },
-      body: JSON.stringify({ 
-        status, 
-        changedBy,
-        notes 
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status, notes }),
     });
-
     const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to update project status: ${res.status} ${res.statusText}`);
-    }
-
+    if (!res.ok) throw new Error(data.message || "Failed to update status");
     return data;
   } catch (err) {
     console.error("updateProjectStatus error:", err.message);
@@ -190,61 +145,15 @@ export const updateProjectStatus = async (projectId, status, notes = "") => {
 };
 
 // ======================
-// Delete a project
+// Delete project (NOT IMPLEMENTED in backend yet)
 // ======================
 export const deleteProject = async (projectId) => {
-  try {
-    if (!projectId) throw new Error("Project ID is required");
-
-    const changedBy = localStorage.getItem("userId");
-
-    const res = await fetch(`${API_URL}/${projectId}`, {
-      method: "DELETE",
-      headers: {
-        "x-user-id": changedBy // Send in headers for middleware
-      }
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to delete project: ${res.status} ${res.statusText}`);
-    }
-
-    return data;
-  } catch (err) {
-    console.error("deleteProject error:", err.message);
-    throw err;
-  }
+  throw new Error("deleteProject route not implemented in backend");
 };
 
 // ======================
-// Update project details
+// Update project (NOT IMPLEMENTED in backend yet)
 // ======================
 export const updateProject = async (projectId, updateData) => {
-  try {
-    if (!projectId) throw new Error("Project ID is required");
-
-    const changedBy = localStorage.getItem("userId");
-
-    const res = await fetch(`${API_URL}/${projectId}`, {
-      method: "PATCH",
-      headers: { 
-        "Content-Type": "application/json",
-        "x-user-id": changedBy // Send in headers for middleware
-      },
-      body: JSON.stringify(updateData),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || `Failed to update project: ${res.status} ${res.statusText}`);
-    }
-
-    return data;
-  } catch (err) {
-    console.error("updateProject error:", err.message);
-    throw err;
-  }
+  throw new Error("updateProject route not implemented in backend");
 };

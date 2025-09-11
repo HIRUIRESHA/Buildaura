@@ -39,25 +39,27 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     if (!userData?.role) return console.error("Login error: role missing in userData");
 
-    // normalize role (avoid mismatch casing)
     const normalizedRole = userData.role.toLowerCase();
 
-    setAuth({
+    const newAuth = {
       isLoggedIn: true,
       role: normalizedRole,
       user: { ...userData, role: normalizedRole },
-    });
+    };
+
+    setAuth(newAuth);
+    localStorage.setItem("auth", JSON.stringify(newAuth));
   };
 
   // Logout function
   const logout = () => {
     setAuth({ isLoggedIn: false, role: null, user: null });
-    // keep hasCart for persistent view cart
     localStorage.removeItem("auth");
   };
 
+  // Expose `user` directly for easier access in components
   return (
-    <AuthContext.Provider value={{ auth, login, logout, setAuth, hasCart, setHasCart }}>
+    <AuthContext.Provider value={{ auth, user: auth.user, login, logout, setAuth, hasCart, setHasCart }}>
       {children}
     </AuthContext.Provider>
   );

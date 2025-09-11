@@ -1,3 +1,4 @@
+
 // src/pages/AdminDash.jsx
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -95,29 +96,42 @@ const AdminDash = () => {
   const [projects, setProjects] = useState([]);
   const fetchProjects = async () => {
     try {
-      const role = localStorage.getItem("role");
+      const storedAuth = JSON.parse(localStorage.getItem("auth"));
+      const role = storedAuth?.role;
+      const userId = storedAuth?.user?._id;
+
       let data;
+
       if (role === "admin") {
         data = await getAllProjects();
+      } else if (role === "client") {
+        if (!userId) throw new Error("Invalid Client ID");
+        data = await getClientProjects(userId);
       } else {
-        const clientId = localStorage.getItem("userMongoId");
-        if (!clientId) throw new Error("Invalid Client ID");
-        data = await getClientProjects(clientId);
+        console.warn("Unknown role:", role);
+        setProjects([]);
+        return;
       }
-      setProjects(data.projects || data || []);
+
+
+      setProjects(Array.isArray(data) ? data : data.projects || []);
     } catch (err) {
       console.error("Fetch projects error:", err);
       toast.error("Failed to fetch projects");
+      setProjects([]);
     }
   };
-  const handleUpdateStatus = async (projectId, status) => {
+
+  const handleUpdateStatus = async (projectId, currentStatus) => {
+    const nextStatus = prompt("Enter new status for this project:", currentStatus);
+    if (!nextStatus) return;
     try {
-      await updateProjectStatus(projectId, status);
+      await updateProjectStatus(projectId, nextStatus);
       toast.success("Project status updated");
       fetchProjects();
     } catch (err) {
       console.error(err);
-      toast.error("Failed to update status");
+      toast.error("Failed to update project status");
     }
   };
 
@@ -143,7 +157,7 @@ const AdminDash = () => {
     fetchUsers();
     fetchCompanies();
     fetchCarts();
-    // fetchProjects();
+    fetchProjects();
   }, []);
 
   // Status badge component
@@ -171,13 +185,14 @@ const AdminDash = () => {
     users: { icon: "👥", label: "Users", color: "blue" },
     companies: { icon: "🏢", label: "Companies", color: "purple" },
     carts: { icon: "🛒", label: "Carts", color: "green" },
-    // projects: { icon: "📋", label: "Projects", color: "orange" }
+    projects: { icon: "📋", label: "Projects", color: "orange" }
   };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "users":
         return (
+          // ... same JSX as your original "users" tab
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -370,8 +385,70 @@ const AdminDash = () => {
           </div>
         );
 
+      case "projects":
+      return (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gradient-to-r from-orange-50 to-yellow-50">
+                <tr>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Project ID</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Name</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Client</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Type</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Budget</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Status</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {projects.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="px-6 py-12 text-center text-gray-500">
+                      <div className="flex flex-col items-center">
+                        <div className="text-6xl mb-4">📋</div>
+                        <p className="text-lg font-medium">No projects found</p>
+                        <p className="text-sm text-gray-400">Projects will appear here once they are created</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  projects.map((project, index) => (
+                    <tr key={project.id || project._id} className={`hover:bg-gray-50 transition-colors ${index % 2 === 0 ? 'bg-white' : 'bg-gray-25'}`}>
+                      <td className="px-6 py-4 font-mono text-sm">{(project.id || project._id).slice(-6).toUpperCase()}</td>
+                      <td className="px-6 py-4 font-medium text-gray-900">{project.projectName}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{project.clientName || "N/A"}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{project.projectType || "N/A"}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{project.budget ?? "-"}</td>
+                      <td className="px-6 py-4">
+                        <StatusBadge status={project.status || "pending"} />
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <div className="flex gap-2 justify-center">
+                          <button
+                            className="bg-blue-500 hover:bg-blue-600 px-3 py-1 text-white text-sm rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md"
+                            onClick={() => openModal(project)}
+                          >
+                            View
+                          </button>
+                          <button
+                            className="bg-green-500 hover:bg-green-600 px-3 py-1 text-white text-sm rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md"
+                            onClick={() => handleUpdateStatus(project.id || project._id, project.status)}
+                          >
+                            Update Status
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
       default:
-        return null; // projects remain unchanged
+        return null;
     }
   };
 
@@ -412,7 +489,7 @@ const AdminDash = () => {
           {renderTabContent()}
         </div>
 
-        {/* Enhanced Modal */}
+        {/* Modal */}
         {modalOpen && modalContent && (
           <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
