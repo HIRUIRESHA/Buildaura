@@ -143,31 +143,42 @@ export const getCompanyProjects = async (req, res) => {
   try {
     const { companyId } = req.params;
 
-    // Validate company exists
-    const company = await Company.findById(companyId);
+    let company;
+
+    // Check if it's a valid ObjectId
+    const isValidObjectId = /^[0-9a-fA-F]{24}$/.test(companyId);
+
+    if (isValidObjectId) {
+      company = await Company.findById(companyId);
+    } else {
+      // Otherwise, look up by companyId field (CMP-0001)
+      company = await Company.findOne({ companyId: companyId });
+    }
+
     if (!company) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Company not found" 
+      return res.status(404).json({
+        success: false,
+        message: `Company not found for identifier: ${companyId}`
       });
     }
 
-    const projects = await ProjectCart.find({ company: companyId })
+    // ✅ Use company._id here
+    const projects = await ProjectCart.find({ company: company._id })
       .populate("client", "firstName lastName email userId")
-      .populate("company", "name email")
+      .populate("company", "name email companyId")
       .sort({ createdAt: -1 });
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       count: projects.length,
-      projects 
+      projects
     });
   } catch (error) {
     console.error("getCompanyProjects error:", error);
-    res.status(500).json({ 
-      success: false, 
+    res.status(500).json({
+      success: false,
       message: "Error fetching company projects",
-      error: error.message 
+      error: error.message
     });
   }
 };

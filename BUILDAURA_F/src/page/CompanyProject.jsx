@@ -17,7 +17,7 @@ export default function CompanyProject() {
       setLoading(true);
       try {
         // Use companyId if available, otherwise use _id
-        const companyId = user.companyId || user._id;
+        const companyId = user._id || user.companyId;
         const data = await getCompanyProjects(companyId);
         
         if (data.success) {

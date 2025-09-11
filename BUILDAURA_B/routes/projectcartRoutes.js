@@ -203,7 +203,10 @@ router.get("/company/:companyId", async (req, res) => {
       .populate("client", "firstName lastName email userId")
       .populate("company", "name email")
       .sort({ createdAt: -1 });
-
+const responseProjects = projects.map(p => ({
+  ...p.toObject(),
+  _id: p._id.toString() // ensure _id is present and a string
+}));
     res.json({ 
       success: true, 
       count: projects.length,

@@ -143,7 +143,7 @@ const AdminDash = () => {
     fetchUsers();
     fetchCompanies();
     fetchCarts();
-    fetchProjects();
+    // fetchProjects();
   }, []);
 
   // Status badge component
@@ -171,7 +171,7 @@ const AdminDash = () => {
     users: { icon: "👥", label: "Users", color: "blue" },
     companies: { icon: "🏢", label: "Companies", color: "purple" },
     carts: { icon: "🛒", label: "Carts", color: "green" },
-    projects: { icon: "📋", label: "Projects", color: "orange" }
+    // projects: { icon: "📋", label: "Projects", color: "orange" }
   };
 
   const renderTabContent = () => {

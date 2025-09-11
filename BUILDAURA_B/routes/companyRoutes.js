@@ -63,16 +63,17 @@ router.post("/login", async (req, res) => {
     if (!isMatch) return res.status(400).json({ success: false, message: "Incorrect password" });
 
     res.json({
-      success: true,
-      message: `Login successful! Welcome ${company.name}`,
-      company: {
-        companyId: company.companyId,
-        name: company.name,
-        email: company.email,
-        companySize: company.companySize,
-        industry: company.industry,
-      },
-    });
+  success: true,
+  message: `Login successful! Welcome ${company.name}`,
+  company: {
+    _id: company._id,  // <--- add this
+    companyId: company.companyId,
+    name: company.name,
+    email: company.email,
+    companySize: company.companySize,
+    industry: company.industry,
+  },
+});
   } catch (error) {
     console.error("Company login error:", error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -169,15 +170,33 @@ router.get("/all", async (req, res) => {
 // =========================
 // 8️⃣ Get company by companyId
 // =========================
-router.get("/get/:companyId", async (req, res) => {
+// GET /api/companies/get/:companyIdOrMongoId
+router.get("/get/:companyIdOrMongoId", async (req, res) => {
   try {
-    const company = await Company.findOne({ companyId: req.params.companyId });
-    if (!company) return res.status(404).json({ success: false, message: "Company not found" });
+    const { companyIdOrMongoId } = req.params;
+
+    let company;
+
+    // Check if it’s a valid MongoDB ObjectId
+    const isValidObjectId = /^[0-9a-fA-F]{24}$/.test(companyIdOrMongoId);
+
+    if (isValidObjectId) {
+      company = await Company.findById(companyIdOrMongoId);
+    } else {
+      company = await Company.findOne({ companyId: companyIdOrMongoId });
+    }
+
+    if (!company) {
+      return res.status(404).json({ success: false, message: "Company not found" });
+    }
+
     res.json({ success: true, company });
   } catch (error) {
     console.error("Get company error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
+
 
 export default router;

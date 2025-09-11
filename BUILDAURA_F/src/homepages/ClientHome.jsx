@@ -1,28 +1,21 @@
-import { useState, useEffect } from 'react';
-import { ArrowRight, Users, Award, Zap, Shield, Phone, Mail, MapPin, Globe, Star, Sparkles, CheckCircle, TrendingUp, Target, Rocket, Code, Palette, Database, ChevronDown, Play, Hammer, HardHat, Truck } from 'lucide-react';
+import { useState, useEffect, useContext } from 'react';
+import { Users, Award, Shield, HardHat, Hammer, Truck, Target, ChevronRight, Star } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
+import { Link } from "react-router-dom";
 
 export default function ClientHome() {
-  const [clientName] = useState('John');
-  const [currentHour] = useState(new Date().getHours());
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [scrollY, setScrollY] = useState(0);
-  
+  const { auth } = useContext(AuthContext);  // ✅ Use real AuthContext
+  const clientName = auth?.user?.firstName || 'Client';
+
+  const [currentHour, setCurrentHour] = useState(new Date().getHours());
+
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    
-    const handleScroll = () => setScrollY(window.scrollY);
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    const interval = setInterval(() => {
+      setCurrentHour(new Date().getHours());
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
-  
+
   const getGreeting = () => {
     if (currentHour < 12) return 'Good Morning';
     if (currentHour < 17) return 'Good Afternoon';
@@ -30,124 +23,97 @@ export default function ClientHome() {
     return 'Good Night';
   };
 
-  const FloatingOrb = ({ size, color, delay, duration, initialX, initialY }) => (
-    <div 
-      className={`absolute rounded-full blur-sm ${color} animate-float-complex opacity-30`}
-      style={{
-        width: size,
-        height: size,
-        left: initialX,
-        top: initialY,
-        animationDelay: `${delay}s`,
-        animationDuration: `${duration}s`,
-        transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
-      }}
-    />
-  );
-
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      {/* Advanced CSS Animations */}
-      <style jsx>{`
-        @keyframes float-complex {
-          0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-          25% { transform: translate3d(30px, -40px, 0) rotate(90deg) scale(1.1); }
-          50% { transform: translate3d(-20px, -80px, 0) rotate(180deg) scale(0.9); }
-          75% { transform: translate3d(-40px, -40px, 0) rotate(270deg) scale(1.05); }
-        }
-        @keyframes pulse-glow {
-          0%,100% { box-shadow:0 0 20px rgba(59,130,246,0.3); }
-          50% { box-shadow:0 0 40px rgba(59,130,246,0.6),0 0 60px rgba(147,51,234,0.4); }
-        }
-        @keyframes text-shimmer {0%{background-position:-200% center;}100%{background-position:200% center;}}
-        @keyframes particle-float {0%,100%{transform:translateY(0) rotate(0deg);}33%{transform:translateY(-100px) rotate(120deg);}66%{transform:translateY(-50px) rotate(240deg);}}
-        .animate-float-complex{animation:float-complex 8s ease-in-out infinite;}
-        .animate-pulse-glow{animation:pulse-glow 3s ease-in-out infinite;}
-        .text-shimmer{background:linear-gradient(90deg,#60a5fa,#a78bfa,#f472b6,#60a5fa);background-size:200% auto;animation:text-shimmer 3s linear infinite;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-        .animate-particle-float{animation:particle-float 6s ease-in-out infinite;}
-        .card-hover-3d{transform-style:preserve-3d;transition:all 0.6s cubic-bezier(0.23,1,0.32,1);}
-        .card-hover-3d:hover{transform:rotateY(5deg) rotateX(5deg) translateZ(50px);}
-        .morphing-bg{background:linear-gradient(-45deg,#0f0f23,#1a0d2e,#2d1b69,#0f0f23);background-size:400% 400%;animation:gradient-morph 15s ease infinite;}
-        @keyframes gradient-morph{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-        .glass-morphism{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);}
-        .neon-border{position:relative;overflow:hidden;}
-        .neon-border::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(59,130,246,0.4),transparent);transition:left 0.5s;}
-        .neon-border:hover::before{left:100%;}
-      `}</style>
-
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 morphing-bg"></div>
-
-      {/* Floating Orbs */}
-      <FloatingOrb size="200px" color="bg-blue-500" delay={0} duration={12} initialX="10%" initialY="20%" />
-      <FloatingOrb size="150px" color="bg-purple-500" delay={2} duration={15} initialX="80%" initialY="10%" />
-      <FloatingOrb size="100px" color="bg-pink-500" delay={4} duration={10} initialX="70%" initialY="70%" />
-      <FloatingOrb size="120px" color="bg-cyan-500" delay={6} duration={18} initialX="20%" initialY="80%" />
-      <FloatingOrb size="80px" color="bg-yellow-500" delay={1} duration={14} initialX="50%" initialY="30%" />
-
-      {/* Particle System */}
+    <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden">
+      {/* Decorative Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div key={i} className="absolute w-2 h-2 bg-white rounded-full opacity-20 animate-particle-float"
-            style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`, animationDelay: `${Math.random() * 6}s` }}
-          />
-        ))}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute -bottom-32 left-1/2 transform -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-gray-50 to-transparent rounded-full opacity-60"></div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20" style={{ transform: `translateY(${scrollY * 0.5}px)` }} />
+      {/* Hero */}
+      <section className="relative min-h-screen flex items-center justify-center px-4">
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          {/* Animated Logo */}
+          {/* Logo with Enhanced Typography */}
           <div className="mb-12 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-30 blur-3xl animate-pulse-glow"></div>
-            <h1 className="relative text-8xl md:text-9xl font-black text-shimmer mb-6 tracking-tighter">BuildAura</h1>
+            <div className="absolute -inset-4 bg-gradient-to-r from-yellow-200 via-orange-200 to-yellow-200 rounded-2xl blur-2xl opacity-20 animate-pulse"></div>
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 rounded-full blur-sm"></div>
-              <div className="relative h-2 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 rounded-full mx-auto w-48"></div>
+              {/* ✅ Changed heading gradient to orange → yellow */}
+              <h1 className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 mb-4 tracking-tight">
+                BuildAura
+              </h1>
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                {[1,2,3,4,5].map(i => (
+                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p className="text-xl md:text-2xl text-gray-600 font-light tracking-wide">
+                Your Premium Construction Management Partner
+              </p>
             </div>
-            <p className="text-2xl md:text-3xl text-gray-300 font-light mt-6 animate-pulse">
-              Your Construction Management Partner
-            </p>
           </div>
 
-          {/* 3D Welcome Card */}
-          <div className="mb-16">
-            <div className="glass-morphism rounded-3xl p-12 neon-border card-hover-3d max-w-4xl mx-auto">
-              <div className="flex items-center justify-center mb-6">
-                <div className="bg-gradient-to-r from-emerald-400 to-cyan-400 p-4 rounded-2xl animate-bounce">
-                  <HardHat className="w-12 h-12 text-white" />
+          {/* ✅ Modified Welcome Card (now a wide low column) */}
+          <div className="mb-16 relative ">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 rounded-2xl blur-xl opacity-20 transform rotate-1"></div>
+                 <div className="relative bg-white rounded-2xl px-8 py-6 shadow-lg border border-gray-100 backdrop-blur-sm flex items-center justify-between w-full">
+
+              {/* Icon */}
+                {/* <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-xl blur-lg opacity-50 animate-pulse"></div>
+                  <div className="relative bg-gradient-to-r from-yellow-500 to-orange-500 p-4 rounded-xl shadow-md">
+                    <HardHat className="w-10 h-10 text-white drop-shadow-lg" />
+                  </div>
+                </div> */}
+                {/* Greeting */}
+                {/* <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent">
+                  {getGreeting()}, {clientName}!
+                </h2> */}
+              
+
+              {/* Status Badges */}
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 bg-green-50 px-3 py-1.5 rounded-full">
+                  <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-green-700 font-medium text-sm">System Online</span>
+                </div>
+                <div className="flex items-center space-x-2 bg-blue-50 px-3 py-1.5 rounded-full">
+                  <div className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-blue-700 font-medium text-sm">Projects Ready</span>
                 </div>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                {getGreeting()}, <span className="text-shimmer">{clientName}</span>!
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-                Manage all your construction projects efficiently with BuildAura. Track tasks, teams, materials, and progress—all in one powerful platform.
-              </p>
-              <div className="flex items-center justify-center space-x-4">
-                <div className="w-3 h-3 bg-emerald-400 rounded-full animate-ping"></div>
-                <span className="text-emerald-300 font-medium">System Online • Projects Ready</span>
-                <div className="w-3 h-3 bg-emerald-400 rounded-full animate-ping"></div>
-              </div>
+
+              {/* CTA Button */}
+              <Link
+                to="/projectcart" // <-- replace with your route
+                className="ml-6 group bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-lg font-semibold text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2"
+              >
+                <span>Get Started</span>
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
 
-          {/* Features */}
-          <div className="grid md:grid-cols-4 gap-8 mb-20 max-w-7xl mx-auto">
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-4 gap-8 mb-20 max-w-6xl mx-auto">
             {[
-              { icon: Hammer, title: "Project Management", desc: "Organize tasks & teams", color: "from-blue-500 to-cyan-500" },
-              { icon: Truck, title: "Material Tracking", desc: "Monitor resources & deliveries", color: "from-purple-500 to-pink-500" },
-              { icon: Users, title: "Team Collaboration", desc: "Assign & track workers", color: "from-emerald-500 to-teal-500" },
-              { icon: Shield, title: "Safety Compliance", desc: "Ensure construction safety", color: "from-orange-500 to-red-500" }
+              { icon: Hammer, title: "Project Management", desc: "Organize tasks & teams with precision", gradient: "from-blue-500 to-purple-500" },
+              { icon: Truck, title: "Material Tracking", desc: "Monitor resources & deliveries in real-time", gradient: "from-green-500 to-teal-500" },
+              { icon: Users, title: "Team Collaboration", desc: "Seamlessly assign & track workers", gradient: "from-purple-500 to-pink-500" },
+              { icon: Shield, title: "Safety Compliance", desc: "Ensure construction safety standards", gradient: "from-red-500 to-orange-500" }
             ].map((feature, index) => (
-              <div key={index} className="group">
-                <div className="glass-morphism rounded-3xl p-8 card-hover-3d neon-border h-full transform group-hover:scale-110 transition-all duration-500">
-                  <div className={`bg-gradient-to-br ${feature.color} p-4 rounded-2xl mb-6 mx-auto w-fit group-hover:rotate-12 transition-transform duration-500`}>
-                    <feature.icon className="w-10 h-10 text-white" />
+              <div key={index} className="group relative bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative">
+                  <div className="relative mb-6 w-fit mx-auto">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity`}></div>
+                    <div className={`relative bg-gradient-to-br ${feature.gradient} p-4 rounded-2xl shadow-lg group-hover:shadow-xl transition-shadow`}>
+                      <feature.icon className="w-8 h-8 text-white drop-shadow-sm" />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                  <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{feature.desc}</p>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-800 transition-colors">{feature.title}</h3>
+                  <p className="text-gray-600 group-hover:text-gray-700 transition-colors leading-relaxed">{feature.desc}</p>
                 </div>
               </div>
             ))}
@@ -156,31 +122,58 @@ export default function ClientHome() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 relative">
-        <div className="max-w-6xl mx-auto px-4">
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white relative">
+        <div className="absolute inset-0 bg-white opacity-80"></div>
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-white mb-6">
-              Trusted by <span className="text-shimmer">Construction Leaders</span>
+            <h2 className="text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+              Trusted by Construction Leaders
             </h2>
-            <div className="h-1 w-32 bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full mx-auto"></div>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto font-light">
+              Join thousands of successful construction professionals who rely on BuildAura
+            </p>
+            <div className="flex justify-center">
+              <div className="h-1 w-32 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 rounded-full shadow-lg"></div>
+            </div>
           </div>
+          
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { number: "120+", label: "Active Projects", icon: Target },
-              { number: "99%", label: "Safety Compliance", icon: Shield },
-              { number: "24/7", label: "On-Site Support", icon: Users },
-              { number: "15+", label: "Awards Won", icon: Award }
+              { number: "120+", label: "Active Projects", icon: Target, color: "from-blue-500 to-purple-500" },
+              { number: "99%", label: "Safety Compliance", icon: Shield, color: "from-green-500 to-emerald-500" },
+              { number: "24/7", label: "On-Site Support", icon: Users, color: "from-purple-500 to-pink-500" },
+              { number: "15+", label: "Awards Won", icon: Award, color: "from-yellow-500 to-orange-500" }
             ].map((stat, index) => (
-              <div key={index} className="text-center group">
-                <div className="glass-morphism rounded-3xl p-8 card-hover-3d neon-border">
-                  <div className="bg-gradient-to-br from-blue-500 to-purple-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500">
-                    <stat.icon className="w-8 h-8 text-white" />
+              <div key={index} className="group relative bg-white rounded-3xl p-10 shadow-xl border border-gray-100 text-center hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 overflow-hidden">
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
+                <div className="relative">
+                  <div className="relative mb-6 w-fit mx-auto">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity`}></div>
+                    <div className={`relative bg-gradient-to-br ${stat.color} w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-shadow`}>
+                      <stat.icon className="w-8 h-8 text-white drop-shadow-sm" />
+                    </div>
                   </div>
-                  <div className="text-4xl font-bold text-white mb-2 text-shimmer">{stat.number}</div>
-                  <div className="text-gray-400 group-hover:text-white transition-colors">{stat.label}</div>
+                  <div className="text-4xl font-black text-gray-900 mb-2 group-hover:scale-110 transition-transform">{stat.number}</div>
+                  <div className="text-gray-600 group-hover:text-gray-700 font-medium transition-colors">{stat.label}</div>
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <section className="py-16 bg-white relative">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h3 className="text-3xl font-bold text-gray-900 mb-4">Ready to Transform Your Construction Management?</h3>
+          <p className="text-lg text-gray-600 mb-8 font-light">Experience the power of modern construction technology</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+              Start Free Trial
+            </button>
+            <button className="bg-white border-2 border-gray-300 hover:border-orange-400 text-gray-800 hover:text-orange-600 px-8 py-4 rounded-xl font-semibold transition-all duration-300">
+              Schedule Demo
+            </button>
           </div>
         </div>
       </section>

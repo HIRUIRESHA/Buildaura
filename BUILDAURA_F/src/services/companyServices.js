@@ -71,3 +71,16 @@ export const getCompanyById = async (companyId) => {
     return { success: false, message: "Server error", company: null };
   }
 };
+
+export const getCompanyProfile = async (companyIdOrMongoId) => {
+  try {
+    const response = await fetch(`${API_URL}/get/${companyIdOrMongoId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("Get company profile error:", err);
+    return { success: false, message: "Server error", company: null };
+  }
+};

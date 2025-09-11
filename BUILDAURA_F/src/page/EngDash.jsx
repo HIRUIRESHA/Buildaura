@@ -3,35 +3,44 @@ import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { getClientProjects, updateProjectStatus } from "../services/projectCartServices";
+import { getAllProjects, updateProjectStatus } from "../services/projectCartServices";
 import { getCarts } from "../services/companyCartServices";
 
 const EngDash = () => {
   const [activeTab, setActiveTab] = useState("projects");
 
   // =========================
-  // Projects assigned to engineer
+  // Projects (view all)
   // =========================
   const [projects, setProjects] = useState([]);
+  const [loadingProjects, setLoadingProjects] = useState(false);
+  const [updatingProjectId, setUpdatingProjectId] = useState(null); // To disable dropdown during update
+
   const fetchProjects = async () => {
     try {
-      const engineerId = localStorage.getItem("userMongoId"); // engineer ID
-      const data = await getClientProjects(engineerId); // get projects assigned to this engineer
-      setProjects(data.projects || []);
+      setLoadingProjects(true);
+      const data = await getAllProjects(); // fetch all projects
+      setProjects(data.docs || []);        // paginate result in `docs`
     } catch (err) {
       console.error("Fetch projects error:", err);
       toast.error("Failed to fetch projects");
+    } finally {
+      setLoadingProjects(false);
     }
   };
 
   const handleUpdateStatus = async (projectId, status) => {
     try {
+      setUpdatingProjectId(projectId);
+      // Pass just status string as per your updated requirement
       await updateProjectStatus(projectId, status);
       toast.success("Project status updated");
       fetchProjects();
     } catch (err) {
       console.error(err);
       toast.error("Failed to update status");
+    } finally {
+      setUpdatingProjectId(null);
     }
   };
 
@@ -50,7 +59,7 @@ const EngDash = () => {
   };
 
   // =========================
-  // Modal
+  // Modal (currently not used but placeholder)
   // =========================
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -73,11 +82,14 @@ const EngDash = () => {
   }, []);
 
   // =========================
-  // Tab content
+  // Tab content renderer
   // =========================
   const renderTabContent = () => {
     switch (activeTab) {
       case "projects":
+        if (loadingProjects) {
+          return <p>Loading projects...</p>;
+        }
         return (
           <table className="w-full border-collapse border">
             <thead>
@@ -103,12 +115,12 @@ const EngDash = () => {
                     <td className="border px-2 py-1">{project.company?.name}</td>
                     <td className="border px-2 py-1">{project.budget}</td>
                     <td className="border px-2 py-1">{project.status}</td>
-                    <td className="border px-2 py-1 flex gap-2">
-                      <button className="bg-blue-500 px-2 py-1 text-white rounded" onClick={() => openModal(project)}>View</button>
+                    <td className="border px-2 py-1">
                       <select
                         className="border rounded p-1"
                         value={project.status}
                         onChange={(e) => handleUpdateStatus(project._id, e.target.value)}
+                        disabled={updatingProjectId === project._id}
                       >
                         <option value="pending_approval">Pending Approval</option>
                         <option value="approved">Approved</option>
@@ -150,8 +162,8 @@ const EngDash = () => {
                     <td className="border px-2 py-1">{cart.experience}</td>
                     <td className="border px-2 py-1">{cart.location}</td>
                     <td className="border px-2 py-1">{cart.specialization}</td>
-                    <td className="border px-2 py-1 flex gap-2">
-                      <button className="bg-blue-500 px-2 py-1 text-white rounded" onClick={() => openModal(cart)}>View</button>
+                    <td className="border px-2 py-1">
+                      {/* No actions */}
                     </td>
                   </tr>
                 ))
@@ -182,17 +194,9 @@ const EngDash = () => {
         ))}
       </div>
 
-      <div className="border rounded p-4 shadow overflow-x-auto">{renderTabContent()}</div>
-
-      {/* Modal */}
-      {modalOpen && modalContent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded p-6 max-w-lg w-full relative">
-            <button className="absolute top-2 right-2 text-red-500 font-bold" onClick={closeModal}>X</button>
-            <pre className="whitespace-pre-wrap">{JSON.stringify(modalContent, null, 2)}</pre>
-          </div>
-        </div>
-      )}
+      <div className="border rounded p-4 shadow overflow-x-auto">
+        {renderTabContent()}
+      </div>
     </div>
   );
 };

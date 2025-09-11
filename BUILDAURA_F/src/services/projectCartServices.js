@@ -79,7 +79,7 @@ export const getClientProjects = async (clientId) => {
 // ======================
 export const getCompanyProjects = async (companyId) => {
   try {
-    const id = companyId || localStorage.getItem("companyId");
+    const id = companyId || localStorage.getItem("_id");
 
     if (!id) throw new Error("Invalid Company ID");
 

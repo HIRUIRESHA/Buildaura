@@ -24,8 +24,8 @@ import Signup from './components/Signup';
 import Companysign from './components/Companysign';
 import Userregister from './components/Userregister';
 import AdminDash from './page/AdminDash';
-import CompanyHome from "./homepages/CompanyHome";   // ✅ Import CompanyHome
-import CompanyCart from "./page/CompanyCart";        // ✅ Import CompanyCart
+import CompanyHome from "./homepages/CompanyHome";   
+import CompanyCart from "./page/CompanyCart";        
 import ClientHome from './homepages/ClientHome';
 import EngHome from './homepages/EngHome';
 import Project from './page/Project';
@@ -34,7 +34,6 @@ import CompanyProject from './page/CompanyProject';
 import EngDash from './page/EngDash';
 import CompanyDash from './page/CompanyDash';
 
-
 function App() {
   return (
     <AuthProvider>
@@ -42,7 +41,10 @@ function App() {
         <NavbarSwitch />  {/* Role-based Navbar */}
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Home />} />
+          <Route 
+            path="/" 
+            element={<RootRedirect />}   // ✅ Root redirect logic
+          />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -51,10 +53,7 @@ function App() {
           <Route path="/companysign" element={<Companysign />} />
           <Route path="/userregister" element={<Userregister />} />
 
-
-
           {/* Admin Routes */}
-          
           <Route 
             path="/admin/dash" 
             element={<RequireRole role="admin"><AdminDash /></RequireRole>} 
@@ -88,8 +87,7 @@ function App() {
             element={<RequireRole role="engineer"><EngDash /></RequireRole>} 
           />
 
-
-          {/* client Routes */}
+          {/* Client Routes */}
           <Route 
             path="/client/home" 
             element={<RequireRole role="client"><ClientHome /></RequireRole>} 
@@ -98,21 +96,14 @@ function App() {
             path="/companies" 
             element={<RequireRole role="client"><Companies /></RequireRole>} 
           />
-
           <Route 
             path="/project" 
             element={<RequireRole role="client"><Project /></RequireRole>} 
           />
-
           <Route 
             path="/projectcart" 
             element={<RequireRole role="client"><ProjectCart /></RequireRole>} 
           />
-
-
-          {/* Example: engineer & client routes in future */}
-          {/* <Route path="/engineer/dashboard" element={<RequireRole role="engineer"><EngineerDashboard /></RequireRole>} /> */}
-          {/* <Route path="/client/dashboard" element={<RequireRole role="client"><ClientDashboard /></RequireRole>} /> */}
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -122,6 +113,26 @@ function App() {
       </Router>
     </AuthProvider>
   );
+}
+
+// ✅ Root redirect logic
+function RootRedirect() {
+  const { auth } = React.useContext(AuthContext);
+
+  if (auth.isLoggedIn && auth.role === "admin") {
+    return <Navigate to="/admin/dash" replace />;
+  }
+  if (auth.isLoggedIn && auth.role === "company") {
+    return <Navigate to="/company/home" replace />;
+  }
+  if (auth.isLoggedIn && auth.role === "engineer") {
+    return <Navigate to="/eng/home" replace />;
+  }
+  if (auth.isLoggedIn && auth.role === "client") {
+    return <Navigate to="/client/home" replace />;
+  }
+
+  return <Home />; // Default for public
 }
 
 // Role-based Navbar switch

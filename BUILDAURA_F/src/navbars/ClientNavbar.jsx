@@ -23,7 +23,6 @@ export default function ClientNavbar() {
   const links = [
     { name: 'Home', to: '/client/home' },
     { name: 'Projects', to: '/project' },
-    { name: 'Requests', to: '/client/requests' },
     { name: 'Companies', to: '/companies' },
   ];
 
