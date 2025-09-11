@@ -1,6 +1,8 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
+import Company from "../models/company.js";
+
 
 const router = express.Router();
 
@@ -136,5 +138,37 @@ router.get("/get/:userId", async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
+// Get all engineers for a specific company (by _id or companyId)
+router.get("/company/:companyIdentifier", async (req, res) => {
+  try {
+    const { companyIdentifier } = req.params;
+    let company;
+
+    // 1️⃣ Check if companyIdentifier is a valid MongoDB ObjectId
+    const isObjectId = /^[0-9a-fA-F]{24}$/.test(companyIdentifier);
+
+    if (isObjectId) {
+      company = await Company.findById(companyIdentifier);
+    } else {
+      // Otherwise, search by companyId string like CMP-0001
+      company = await Company.findOne({ companyId: companyIdentifier.toUpperCase() });
+    }
+
+    if (!company) return res.status(404).json({ success: false, message: "Company not found" });
+
+    // 2️⃣ Find engineers for this company
+    const employees = await User.find({ company: company._id, role: "engineer" })
+      .select("firstName lastName email phoneNumber role userId")
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, employees });
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+
 
 export default router;

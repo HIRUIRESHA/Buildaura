@@ -33,6 +33,7 @@ import ProjectCart from "./page/ProjectCart";
 import CompanyProject from './page/CompanyProject';
 import EngDash from './page/EngDash';
 import CompanyDash from './page/CompanyDash';
+import Employee from './page/Employee';
 
 function App() {
   return (
@@ -73,9 +74,13 @@ function App() {
             element={<RequireRole role="company"><CompanyCart /></RequireRole>} 
           />
           <Route 
+            path="/company/employee" 
+            element={<RequireRole role="company"><Employee /></RequireRole>} 
+          />
+          {/* <Route 
             path="/company/projects" 
             element={<RequireRole role="company"><CompanyProject /></RequireRole>} 
-          />
+          /> */}
 
           {/* Eng Routes */}
           <Route 

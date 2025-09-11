@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   role: { type: String, enum: ["client", "engineer"], required: true },
-  company: { type: String, default: null },
+  company: { type: mongoose.Schema.Types.ObjectId, ref: "Company", default: null }, // updated
   userId: { type: String, unique: true, sparse: true } // auto-generated
 }, { timestamps: true });
 

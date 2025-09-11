@@ -36,7 +36,7 @@ export default function CompanyNavbar() {
     { name: 'Home', to: '/company/home' },
     { name: 'Dashboard', to: '/company/dash' },
     // { name: 'Projects', to: '/company/projects' },
-    { name: 'Employees', to: '/company/employees' },
+    { name: 'Employees', to: '/company/employee' },
   ];
 
   return (
