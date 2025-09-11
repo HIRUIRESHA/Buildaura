@@ -119,7 +119,7 @@ const CompanyDash = () => {
       <div className="p-6 max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-yellow-300 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent mb-2">
             Company Dashboard
           </h1>
           <p className="text-gray-600">Manage your projects and track progress</p>
@@ -128,7 +128,7 @@ const CompanyDash = () => {
         {/* Company Profile Card */}
         {profile && (
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-r from-orange-600 to-yellow-300 p-6">
+            <div className="bg-gradient-to-r from-slate-950 to-slate-900 p-6">
               <h2 className="text-2xl font-bold text-white flex items-center">
                 <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-6a1 1 0 00-1-1H9a1 1 0 00-1 1v6a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd" />
@@ -165,7 +165,7 @@ const CompanyDash = () => {
                 </div>
                 <div className="flex items-center justify-center">
                   <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 text-center">
-                    <div className="text-3xl font-bold text-red-600">{projects.length}</div>
+                    <div className="text-3xl font-bold text-sky-600">{projects.length}</div>
                     <div className="text-gray-600">Total Projects</div>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ const CompanyDash = () => {
 
         {/* Projects Section */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-red-600 to-orange-600 p-6">
+          <div className="bg-gradient-to-r from-orange-600 to-yellow-500 p-6">
             <h2 className="text-2xl font-bold text-white flex items-center">
               <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

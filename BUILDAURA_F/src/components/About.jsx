@@ -1,5 +1,13 @@
 import React from "react";
 import { Target, Users, Clock, CheckCircle, Award, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
+import plaza_sImage from "../assets/plaza_s.jpeg"; 
+import harborImage from "../assets/harbor.jpeg"; 
+import marianaImage from "../assets/mariana.jpeg"; 
+import victoriaImage from "../assets/victoria.jpeg"; 
+import apexImage from "../assets/apex.jpeg"; 
+import plazaImage from "../assets/plaza_s.jpeg"; 
+
 
 function About() {
   const features = [
@@ -30,32 +38,32 @@ function About() {
     {
       title: "Queenstown Plaza",
       location: "Auckland",
-      image: "/placeholder.svg?height=300&width=400&text=Modern+Office+Building",
+      image: plaza_sImage,
     },
     {
       title: "Marina Tower",
       location: "Wellington",
-      image: "/placeholder.svg?height=300&width=400&text=Marina+Tower+Complex",
+      image: marianaImage,
     },
     {
       title: "Victoria Center",
       location: "Hamilton",
-      image: "/placeholder.svg?height=300&width=400&text=Victoria+Center+Building",
+      image: victoriaImage,
     },
     {
       title: "Sunset Plaza",
       location: "Christchurch",
-      image: "/placeholder.svg?height=300&width=400&text=Sunset+Plaza+Complex",
+      image: plazaImage,
     },
     {
       title: "Harbor Point",
       location: "Dunedin",
-      image: "/placeholder.svg?height=300&width=400&text=Harbor+Point+Tower",
+      image: harborImage,
     },
     {
       title: "Apex Tower",
       location: "Tauranga",
-      image: "/placeholder.svg?height=300&width=400&text=Apex+Tower+Skyscraper",
+      image: apexImage,
     },
   ];
 
@@ -97,9 +105,11 @@ function About() {
 
                 {/* Buttons replacement */}
                 <div className="flex flex-wrap gap-4">
-                  <button className="text-white bg-orange-600 hover:bg-orange-700 rounded px-6 py-3 text-lg font-semibold transition-colors duration-200">
-                    Get Started
-                  </button>
+                  <Link to="/signup">
+                    <button className="text-white bg-orange-600 hover:bg-orange-700 rounded px-6 py-3 text-lg font-semibold transition-colors duration-200">
+                      Get Started
+                    </button>
+                  </Link>
                   <button className="border border-gray-300 hover:border-orange-600 text-gray-700 hover:text-orange-600 rounded px-6 py-3 text-lg font-semibold transition-colors duration-200">
                     Learn More
                   </button>
@@ -244,10 +254,10 @@ function About() {
                     </div>
                   ))}
                 </div>
-
+                <Link to="/contact">
                 <button className="text-white bg-gray-900 hover:bg-gray-800 rounded px-6 py-3 text-lg font-semibold transition-colors duration-200">
                   Contact Us Today
-                </button>
+                </button></Link>
               </div>
 
               <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-8 text-white">

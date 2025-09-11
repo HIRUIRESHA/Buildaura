@@ -16,36 +16,36 @@ export default function ClientHome() {
     return () => clearInterval(interval);
   }, []);
 
-  const getGreeting = () => {
-    if (currentHour < 12) return 'Good Morning';
-    if (currentHour < 17) return 'Good Afternoon';
-    if (currentHour < 21) return 'Good Evening';
-    return 'Good Night';
-  };
+  // const getGreeting = () => {
+  //   if (currentHour < 12) return 'Good Morning';
+  //   if (currentHour < 17) return 'Good Afternoon';
+  //   if (currentHour < 21) return 'Good Evening';
+  //   return 'Good Night';
+  // };
 
   return (
     <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden">
       {/* Decorative Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
         <div className="absolute -bottom-32 left-1/2 transform -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-gray-50 to-transparent rounded-full opacity-60"></div>
-      </div>
+      </div> */}
 
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center px-4">
         <div className="max-w-7xl mx-auto text-center relative z-10">
           {/* Logo with Enhanced Typography */}
           <div className="mb-12 relative">
-            <div className="absolute -inset-4 bg-gradient-to-r from-yellow-200 via-orange-200 to-yellow-200 rounded-2xl blur-2xl opacity-20 animate-pulse"></div>
+            <div className="absolute -inset-4 rounded-2xl blur-2xl opacity-20 animate-pulse"></div>
             <div className="relative">
               {/* ✅ Changed heading gradient to orange → yellow */}
-              <h1 className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 mb-4 tracking-tight">
+              <h1 className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-950 via-slate-700 to-slate-800 mb-4 tracking-tight">
                 BuildAura
               </h1>
               <div className="flex items-center justify-center space-x-2 mb-2">
                 {[1,2,3,4,5].map(i => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  <Star key={i} className="w-5 h-5 text-slate-400 fill-current" />
                 ))}
               </div>
               <p className="text-xl md:text-2xl text-gray-600 font-light tracking-wide">

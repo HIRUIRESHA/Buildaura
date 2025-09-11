@@ -1,5 +1,7 @@
 import React from "react";
 import {MapPin,Phone, Mail,Send,MessageSquare,Clock,} from "lucide-react";
+import contactpImage from "../assets/contactp.jpeg"; 
+
 
 function Contact() {
   return (
@@ -78,12 +80,13 @@ function Contact() {
             <div className="relative">
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <img
-                  src="/images/building.png"
+                  src={contactpImage}
                   alt="Modern commercial building architectural rendering"
                   className="w-full h-auto object-cover"
                   width={600}
                   height={400}
                 />
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
 

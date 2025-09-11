@@ -1,6 +1,7 @@
 import React from 'react';
 import engImage from '../assets/eng_b.png';
 import {ArrowRight,CheckCircle,TrendingUp,Users,Play,Building,Star} from 'lucide-react'; 
+import { Link } from "react-router-dom";
 
 
 function Home() {
@@ -67,10 +68,11 @@ function Home() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Link to = "/signup">
               <button className="group bg-gradient-to-r from-black to-gray-800 hover:from-gray-800 hover:to-black text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center">
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </button></Link>
               <button className="group border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 rounded-full text-lg font-semibold hover:border-gray-400 transition-all duration-300 flex items-center justify-center">
                 <Play className="mr-2 w-5 h-5 group-hover:scale-110 transition-transform" />
                 Watch Demo

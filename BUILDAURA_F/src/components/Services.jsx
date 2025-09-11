@@ -14,7 +14,7 @@ function Services() {
         "Real-time progress updates",
         "Team collaboration tools",
       ],
-      color: "from-blue-500 to-blue-600",
+      color: "from-violet-500 to-violet-600",
     },
     {
       id: 2,
@@ -28,7 +28,7 @@ function Services() {
         "Issue reporting and resolution",
         "Progress tracking",
       ],
-      color: "from-orange-500 to-orange-600",
+      color: "from-sky-400 to-sky-500",
     },
     {
       id: 3,
@@ -42,7 +42,7 @@ function Services() {
         "Automated low-stock alerts",
         "Cost tracking and reporting",
       ],
-      color: "from-green-500 to-green-600",
+      color: "from-violet-500 to-violet-600",
     },
     {
       id: 4,
@@ -51,7 +51,7 @@ function Services() {
         "Coordinate your workforce efficiently. Assign tasks, track working hours, and monitor employee performance.",
       icon: "👥",
       features: ["Employee scheduling", "Attendance tracking", "Role-based task assignment", "Performance analytics"],
-      color: "from-purple-500 to-purple-600",
+      color: "from-sky-400 to-sky-500",
     },
     {
       id: 5,
@@ -65,7 +65,7 @@ function Services() {
         "Invoice management",
         "Financial reports and analytics",
       ],
-      color: "from-yellow-500 to-yellow-600",
+      color: "from-violet-500 to-violet-600",
     },
     {
       id: 6,
@@ -79,7 +79,7 @@ function Services() {
         "Cost and budget reports",
         "Customizable dashboards",
       ],
-      color: "from-red-500 to-red-600",
+      color: "from-sky-400 to-sky-500",
     },
     {
       id: 7,
@@ -93,7 +93,7 @@ function Services() {
         "Document sharing",
         "Stakeholder dashboards",
       ],
-      color: "from-teal-500 to-teal-600",
+      color: "from-violet-500 to-violet-600",
     },
   ];
 
