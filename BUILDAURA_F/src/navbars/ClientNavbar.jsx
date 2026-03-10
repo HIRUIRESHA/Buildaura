@@ -19,7 +19,6 @@ export default function ClientNavbar() {
     navigate('/');
   };
 
-  // Client links
   const links = [
     { name: 'Home', to: '/client/home' },
     { name: 'Projects', to: '/project' },
@@ -29,13 +28,11 @@ export default function ClientNavbar() {
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center space-x-2">
           <img src={logo} alt="Logo" className="h-16 w-16 object-contain" />
           <span className="text-xl font-bold text-orange-600">BuilAura</span>
         </div>
 
-        {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
           {links.map((link) => (
             <li key={link.name}>
@@ -51,7 +48,6 @@ export default function ClientNavbar() {
           ))}
         </ul>
 
-        {/* Right Section */}
         <div className="hidden md:flex items-center space-x-3 relative">
           {auth?.isLoggedIn ? (
             <div className="relative">
@@ -83,7 +79,6 @@ export default function ClientNavbar() {
           ) : null}
         </div>
 
-        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-gray-700 hover:text-orange-600 focus:outline-none"
           onClick={toggleMenu}
@@ -98,7 +93,6 @@ export default function ClientNavbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       <div
         className={`md:hidden transition-all duration-300 ease-in-out ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'

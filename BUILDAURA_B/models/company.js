@@ -15,7 +15,7 @@ const companySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-generate companyId like CMP-0001, CMP-0002...
+// Auto-generate companyId CMP-0001
 companySchema.pre("save", async function (next) {
   if (this.isNew) {
     try {
@@ -36,7 +36,7 @@ companySchema.pre("save", async function (next) {
   next();
 });
 
-// ✅ Prevent OverwriteModelError in dev environment
+// Prevent OverwriteModelError in dev environment
 const Company = mongoose.models.Company || mongoose.model("Company", companySchema);
 
 export default Company;

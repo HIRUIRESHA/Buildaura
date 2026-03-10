@@ -115,7 +115,6 @@ function UserRegister() {
 
       <div className="relative z-10 p-6">
         <div className="max-w-3xl mx-auto">
-          {/* Enhanced Back Button */}
           <div className="flex items-center mb-8">
             <button
               onClick={handleBack}
@@ -127,10 +126,8 @@ function UserRegister() {
             </button>
           </div>
 
-          {/* Main Card */}
           <div className="bg-white backdrop-blur-2xl border border-black/20 rounded-3xl shadow-2xl overflow-hidden">
             <div className="p-8 lg:p-12">
-              {/* Header Section */}
               <div className="text-center mb-12">
                 <div className="flex items-center justify-center mb-6">
                   <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-2xl flex items-center justify-center mr-4 shadow-lg">
@@ -145,7 +142,6 @@ function UserRegister() {
                 </p>
               </div>
 
-              {/* Benefits Bar */}
               <div className="flex items-center justify-center space-x-8 mb-12 text-gray-600">
                 <div className="flex items-center space-x-2">
                   <Shield className="w-5 h-5 text-green-400" />
@@ -163,7 +159,6 @@ function UserRegister() {
 
               {/* Registration Form */}
               <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Name Fields */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-black flex items-center gap-2">
@@ -198,7 +193,6 @@ function UserRegister() {
                   </div>
                 </div>
 
-                {/* Email */}
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-black flex items-center gap-2">
                     <Mail className="w-4 h-4 text-blue-400" />
@@ -215,7 +209,6 @@ function UserRegister() {
                   />
                 </div>
 
-                {/* Phone Number */}
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-black flex items-center gap-2">
                     <Phone className="w-4 h-4 text-blue-400" />
@@ -232,7 +225,6 @@ function UserRegister() {
                   />
                 </div>
 
-                {/* Password Fields */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-black flex items-center gap-2">
@@ -285,7 +277,6 @@ function UserRegister() {
                   </div>
                 </div>
 
-                {/* Role Selection */}
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-black flex items-center gap-2">
                     <Users className="w-4 h-4 text-blue-400" />
@@ -309,7 +300,6 @@ function UserRegister() {
                   </div>
                 </div>
 
-                {/* Role-specific styling indicator */}
                 <div className="flex items-center justify-center">
                   <div className={`px-6 py-3 rounded-full text-white text-sm font-medium flex items-center gap-2 ${
                     userForm.role === "client" 
@@ -323,7 +313,6 @@ function UserRegister() {
                   </div>
                 </div>
 
-                {/* Company Selection for Engineers */}
                 {userForm.role === "site-engineer" && (
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-black flex items-center gap-2">
@@ -354,7 +343,6 @@ function UserRegister() {
                   </div>
                 )}
 
-                {/* Submit Button */}
                 <div className="pt-6">
                   <button
                     type="submit"
@@ -382,7 +370,6 @@ function UserRegister() {
                   </button>
                 </div>
 
-                {/* Security Notice */}
                 <div className="text-center mt-6 text-black-400 text-sm">
                   <p>🔒 Your information is encrypted and secure</p>
                 </div>

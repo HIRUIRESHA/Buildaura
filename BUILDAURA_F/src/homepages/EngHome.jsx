@@ -77,14 +77,12 @@ const EngHome = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 relative overflow-hidden">
-      {/* Animated Background Orbs */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-full filter blur-3xl animate-pulse"></div>
         <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-500/20 to-pink-600/20 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-r from-emerald-500/20 to-blue-600/20 rounded-full filter blur-3xl animate-pulse delay-2000"></div>
       </div>
 
-      {/* Floating Grid Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
@@ -94,38 +92,9 @@ const EngHome = () => {
         }}></div>
       </div>
 
-      {/* Header
-      <header className="relative z-20 backdrop-blur-xl bg-white/5 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-4">
-              <div className="relative group">
-                <div className="w-14 h-14 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-all duration-300 group-hover:scale-110">
-                  <HardHat className="w-7 h-7 text-white" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-5 h-5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  BuildAura
-                </h1>
-                <p className="text-blue-200 text-sm">Construction Management System</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-white font-medium">Welcome, {userName}</p>
-              <p className="text-blue-200 text-sm">
-                {currentTime.toLocaleDateString()} • {currentTime.toLocaleTimeString()}
-              </p>
-            </div>
-          </div>
-        </div>
-      </header> */}
-
-      {/* Main Content */}
+      
       <main className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-12">
         
-        {/* Hero Section */}
         <section className="text-center mb-20">
           <div className="relative">
             <h1 className="text-6xl md:text-8xl font-bold mb-8">
@@ -146,7 +115,6 @@ const EngHome = () => {
             <span className="text-cyan-300 font-semibold"> Built by engineers, for engineers.</span>
           </p>
           
-          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-2xl text-white font-semibold text-lg shadow-2xl shadow-blue-500/25 hover:shadow-blue-500/40 transform hover:scale-105 transition-all duration-300">
               <span className="relative z-10 flex items-center">
@@ -155,14 +123,10 @@ const EngHome = () => {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-700 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
-            {/* <button className="group px-8 py-4 border-2 border-white/20 rounded-2xl text-white font-semibold text-lg backdrop-blur-xl hover:bg-white/10 transition-all duration-300 flex items-center">
-              <Play className="mr-2 w-5 h-5" />
-              Watch Demo
-            </button> */}
+            
           </div>
         </section>
 
-        {/* Stats Section */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
           {stats.map((stat, index) => (
             <div key={index} className="group relative">
@@ -181,7 +145,6 @@ const EngHome = () => {
           ))}
         </section>
 
-        {/* Features Showcase */}
         <section className="mb-20">
           <h2 className="text-4xl font-bold text-center mb-12">
             <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
@@ -212,7 +175,6 @@ const EngHome = () => {
           </div>
         </section>
 
-        {/* Call to Action */}
         <section className="text-center">
           <div className="backdrop-blur-xl bg-gradient-to-r from-white/10 to-white/5 rounded-3xl p-12 border border-white/20 shadow-2xl">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -227,15 +189,12 @@ const EngHome = () => {
               <button className="px-10 py-5 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl text-white font-bold text-xl shadow-2xl shadow-purple-500/25 hover:shadow-purple-500/40 transform hover:scale-105 transition-all duration-300">
                 Get Started Now
               </button>
-              {/* <button className="px-10 py-5 border-2 border-white/30 rounded-2xl text-white font-bold text-xl backdrop-blur-xl hover:bg-white/10 transition-all duration-300">
-                Learn More
-              </button> */}
+              
             </div>
           </div>
         </section>
       </main>
 
-      {/* CSS Animation Keyframes */}
       <style jsx>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }

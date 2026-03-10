@@ -1,7 +1,6 @@
-// src/services/companyServices.js
-const API_URL = "http://localhost:5000/api/companies"; // Backend URL for companies
+const API_URL = "http://localhost:5000/api/companies"; 
 
-// 1️⃣ Register company
+// Register company
 export const registerCompany = async (companyData) => {
   try {
     const response = await fetch(`${API_URL}/register`, {
@@ -16,7 +15,7 @@ export const registerCompany = async (companyData) => {
   }
 };
 
-// 2️⃣ Delete company (admin)
+//  Delete company (admin)
 export const deleteCompany = async (companyId) => {
   try {
     const response = await fetch(`${API_URL}/delete/${companyId}`, {
@@ -29,7 +28,7 @@ export const deleteCompany = async (companyId) => {
   }
 };
 
-// 3️⃣ Edit company (admin)
+
 export const editCompany = async (companyId, updatedData) => {
   try {
     const response = await fetch(`${API_URL}/edit/${companyId}`, {
@@ -44,7 +43,7 @@ export const editCompany = async (companyId, updatedData) => {
   }
 };
 
-// 4️⃣ Get all companies (admin dashboard)
+
 export const getCompanies = async () => {
   try {
     const response = await fetch(`${API_URL}/all`, {
@@ -58,7 +57,7 @@ export const getCompanies = async () => {
   }
 };
 
-// 5️⃣ Get company by companyId
+
 export const getCompanyById = async (companyId) => {
   try {
     const response = await fetch(`${API_URL}/get/${companyId}`, {

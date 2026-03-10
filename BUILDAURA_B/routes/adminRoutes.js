@@ -2,13 +2,11 @@ import express from "express";
 
 const router = express.Router();
 
-// @route   POST /api/admin/login
-// @desc    Admin login using .env credentials
-// @access  Public
+
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  // Check against .env values
+  // Check .env values
   if (
     email === process.env.ADMIN_EMAIL &&
     password === process.env.ADMIN_PASSWORD

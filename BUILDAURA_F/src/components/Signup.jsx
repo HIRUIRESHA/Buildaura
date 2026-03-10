@@ -5,14 +5,13 @@ import { Building2, User, CheckCircle, Sparkles, Zap, Shield } from 'lucide-reac
 export default function SignupPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-white to-orange-600 relative overflow-hidden">
-      {/* Animated Background Elements */}
+      
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl animate-pulse animation-delay-4000"></div>
       </div>
 
-      {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-bounce opacity-70"></div>
         <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-ping opacity-60"></div>
@@ -22,10 +21,9 @@ export default function SignupPage() {
 
       <div className="relative z-10 p-6 flex items-center justify-center min-h-screen">
         <div className="w-full max-w-6xl">
-          {/* Glass Card Container */}
+
           <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl overflow-hidden">
             <div className="p-12 lg:p-16">
-              {/* Header Section */}
               <div className="text-center mb-16">
                 <div className="flex items-center justify-center mb-6">
                   <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-400 rounded-2xl flex items-center justify-center mr-4">
@@ -44,16 +42,14 @@ export default function SignupPage() {
               </div>
 
               <div className="grid lg:grid-cols-2 gap-8 mb-16">
-                {/* Company Registration Card */}
+
                 <Link
                   to="/companysign"
                   className="group relative bg-gradient-to-br from-orange-500/20 to backdrop-blur-xl border border-orange-300/30 hover:border-orange-400/60 transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/25 hover:scale-105 rounded-3xl overflow-hidden no-underline"
                 >
-                  {/* Card Glow Effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-400/0 via-orange-400/5 to-orange-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
                   <div className="relative p-8 lg:p-10 flex flex-col h-full">
-                    {/* Icon with Animated Ring */}
                     <div className="relative mx-auto mb-8">
                       <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 rounded-full animate-pulse opacity-20 scale-110"></div>
                       <div className="relative w-24 h-24 bg-gradient-to-br from-orange-400 to-red-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
@@ -97,16 +93,13 @@ export default function SignupPage() {
                   </div>
                 </Link>
 
-                {/* User Registration Card */}
                 <Link
                   to="/userregister"
                   className="group relative bg-gradient-to-br from-yellow-500/20 to-white-500/20 backdrop-blur-xl border border-yellow-300/30 hover:border-yellow-400/60 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/25 hover:scale-105 rounded-3xl overflow-hidden no-underline"
                 >
-                  {/* Card Glow Effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/0 via-yellow-400/5 to-yellow-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
                   <div className="relative p-8 lg:p-10 flex flex-col h-full">
-                    {/* Icon with Animated Ring */}
                     <div className="relative mx-auto mb-8">
                       <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse opacity-20 scale-110"></div>
                       <div className="relative w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
@@ -143,7 +136,6 @@ export default function SignupPage() {
                       </div>
                     </div>
 
-                    {/* Call to Action */}
                     <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl p-4 text-center group-hover:from-yellow-400 group-hover:to-orange-400 transition-all duration-300">
                       <span className="text-white font-bold text-lg">Join the Team →</span>
                     </div>
@@ -151,7 +143,6 @@ export default function SignupPage() {
                 </Link>
               </div>
 
-              {/* Trust Indicators */}
               <div className="flex items-center justify-center space-x-8 mb-12 text-black">
                 <div className="flex items-center space-x-2">
                   <Shield className="w-5 h-5 text-green-400" />

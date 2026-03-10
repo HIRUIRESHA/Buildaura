@@ -6,29 +6,27 @@ import {
   getCompanyCartById,
   updateCompanyCart,
   deleteCompanyCart,
-  getCompanyCartByCompanyId, // ✅ new controller
+  getCompanyCartByCompanyId, // new controller
 } from "../controllers/companyCartControllers.js";
 
 const router = express.Router();
 
-// ✅ Multer config (memory storage, no local folder)
+// Multer 
 const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
 });
 
-// ====================
-// Routes
-// ====================
 
-// ✅ Get cart by companyId (for frontend check if cart exists) MUST be before /:id
+
+//  Get cart by companyId 
 router.get("/company/:companyId", getCompanyCartByCompanyId);
 
 // Get cart by MongoDB _id
 router.get("/:id", getCompanyCartById);
 
-// Get all carts (for admin or testing)
+// Get all carts
 router.get("/", getCompanyCarts);
 
 // Create new cart

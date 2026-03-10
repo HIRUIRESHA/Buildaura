@@ -3,7 +3,7 @@ import User from "../models/user.js";
 
 const router = express.Router();
 
-// ✅ Get all users with role "client"
+// Get all users with role "client"
 router.get("/all", async (req, res) => {
   try {
     const clients = await User.find({ role: "client" }).sort({ firstName: 1 });

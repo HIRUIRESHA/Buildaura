@@ -1,9 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 
-// Create context
 export const AuthContext = createContext();
 
-// Provider component
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     isLoggedIn: false,
@@ -11,10 +9,10 @@ export const AuthProvider = ({ children }) => {
     user: null,
   });
 
-  // Track if logged-in company has a cart
+  // Track  logged-in company has a cart
   const [hasCart, setHasCart] = useState(false);
 
-  // Load auth & hasCart from localStorage on mount → persistent login
+  // Load auth & hasCart from localStorage
   useEffect(() => {
     const storedAuth = localStorage.getItem("auth");
     const storedCart = localStorage.getItem("hasCart");
@@ -57,7 +55,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("auth");
   };
 
-  // Expose `user` directly for easier access in components
   return (
     <AuthContext.Provider value={{ auth, user: auth.user, login, logout, setAuth, hasCart, setHasCart }}>
       {children}

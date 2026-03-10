@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { Link } from "react-router-dom";
 
 export default function ClientHome() {
-  const { auth } = useContext(AuthContext);  // ✅ Use real AuthContext
+  const { auth } = useContext(AuthContext); 
   const clientName = auth?.user?.firstName || 'Client';
 
   const [currentHour, setCurrentHour] = useState(new Date().getHours());
@@ -16,30 +16,16 @@ export default function ClientHome() {
     return () => clearInterval(interval);
   }, []);
 
-  // const getGreeting = () => {
-  //   if (currentHour < 12) return 'Good Morning';
-  //   if (currentHour < 17) return 'Good Afternoon';
-  //   if (currentHour < 21) return 'Good Evening';
-  //   return 'Good Night';
-  // };
+
 
   return (
     <div className="min-h-screen bg-white text-gray-900 relative overflow-hidden">
-      {/* Decorative Background Elements */}
-      {/* <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
-        <div className="absolute -bottom-32 left-1/2 transform -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-t from-gray-50 to-transparent rounded-full opacity-60"></div>
-      </div> */}
-
-      {/* Hero */}
+      
       <section className="relative min-h-screen flex items-center justify-center px-4">
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          {/* Logo with Enhanced Typography */}
           <div className="mb-12 relative">
             <div className="absolute -inset-4 rounded-2xl blur-2xl opacity-20 animate-pulse"></div>
             <div className="relative">
-              {/* ✅ Changed heading gradient to orange → yellow */}
               <h1 className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-slate-950 via-slate-700 to-slate-800 mb-4 tracking-tight">
                 BuildAura
               </h1>
@@ -54,25 +40,11 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* ✅ Modified Welcome Card (now a wide low column) */}
           <div className="mb-16 relative ">
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 rounded-2xl blur-xl opacity-20 transform rotate-1"></div>
                  <div className="relative bg-white rounded-2xl px-8 py-6 shadow-lg border border-gray-100 backdrop-blur-sm flex items-center justify-between w-full">
 
-              {/* Icon */}
-                {/* <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-xl blur-lg opacity-50 animate-pulse"></div>
-                  <div className="relative bg-gradient-to-r from-yellow-500 to-orange-500 p-4 rounded-xl shadow-md">
-                    <HardHat className="w-10 h-10 text-white drop-shadow-lg" />
-                  </div>
-                </div> */}
-                {/* Greeting */}
-                {/* <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent">
-                  {getGreeting()}, {clientName}!
-                </h2> */}
               
-
-              {/* Status Badges */}
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2 bg-green-50 px-3 py-1.5 rounded-full">
                   <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></div>
@@ -84,9 +56,8 @@ export default function ClientHome() {
                 </div>
               </div>
 
-              {/* CTA Button */}
               <Link
-                to="/projectcart" // <-- replace with your route
+                to="/projectcart" 
                 className="ml-6 group bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-lg font-semibold text-base shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2"
               >
                 <span>Get Started</span>
@@ -95,7 +66,6 @@ export default function ClientHome() {
             </div>
           </div>
 
-          {/* Features Grid */}
           <div className="grid md:grid-cols-4 gap-8 mb-20 max-w-6xl mx-auto">
             {[
               { icon: Hammer, title: "Project Management", desc: "Organize tasks & teams with precision", gradient: "from-blue-500 to-purple-500" },
@@ -121,7 +91,6 @@ export default function ClientHome() {
         </div>
       </section>
 
-      {/* Stats Section */}
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white relative">
         <div className="absolute inset-0 bg-white opacity-80"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10">
@@ -162,7 +131,6 @@ export default function ClientHome() {
         </div>
       </section>
 
-      {/* Footer Section */}
       <section className="py-16 bg-white relative">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h3 className="text-3xl font-bold text-gray-900 mb-4">Ready to Transform Your Construction Management?</h3>

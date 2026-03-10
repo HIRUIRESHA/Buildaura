@@ -89,7 +89,6 @@ function About() {
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-8">
-                {/* Badge replacement */}
                 <div className="inline-block text-orange-600 border border-orange-200 px-3 py-1 rounded-full text-sm font-semibold">
                   About Our Company
                 </div>
@@ -103,7 +102,6 @@ function About() {
                   every phase ensuring excellence in every project managed.
                 </p>
 
-                {/* Buttons replacement */}
                 <div className="flex flex-wrap gap-4">
                   <Link to="/signup">
                     <button className="text-white bg-orange-600 hover:bg-orange-700 rounded px-6 py-3 text-lg font-semibold transition-colors duration-200">

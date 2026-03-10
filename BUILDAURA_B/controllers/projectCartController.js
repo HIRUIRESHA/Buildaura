@@ -1,11 +1,9 @@
-// controllers/projectCartController.js
+
 import ProjectCart from "../models/projectcart.js";
 import User from "../models/user.js";
 import Company from "../models/company.js";
 
-// ======================
 // Submit a new project
-// ======================
 export const submitProject = async (req, res) => {
   try {
     const {
@@ -55,8 +53,8 @@ export const submitProject = async (req, res) => {
     // Create new project
     const newProject = new ProjectCart({
       projectName,
-      client: client._id, // Store as ObjectId
-      company: company._id, // Store as ObjectId
+      client: client._id, 
+      company: company._id, 
       startDate,
       budget,
       description,
@@ -93,14 +91,12 @@ export const submitProject = async (req, res) => {
   }
 };
 
-// ======================
 // Get projects by client
-// ======================
 export const getClientProjects = async (req, res) => {
   try {
     const { clientId } = req.params;
 
-    // Find client by ObjectId or userId
+    // client by ObjectId or userId
     const client = await User.findOne({
       $or: [
         { _id: clientId },
@@ -136,9 +132,7 @@ export const getClientProjects = async (req, res) => {
   }
 };
 
-// ======================
 // Get projects by company
-// ======================
 export const getCompanyProjects = async (req, res) => {
   try {
     const { companyId } = req.params;
@@ -162,7 +156,6 @@ export const getCompanyProjects = async (req, res) => {
       });
     }
 
-    // ✅ Use company._id here
     const projects = await ProjectCart.find({ company: company._id })
       .populate("client", "firstName lastName email userId")
       .populate("company", "name email companyId")
@@ -183,9 +176,7 @@ export const getCompanyProjects = async (req, res) => {
   }
 };
 
-// ======================
-// Get all projects (for admin)
-// ======================
+// Get all projects
 export const getAllProjects = async (req, res) => {
   try {
     const { page = 1, limit = 10, status } = req.query;
@@ -222,9 +213,7 @@ export const getAllProjects = async (req, res) => {
   }
 };
 
-// ======================
 // Update project status
-// ======================
 export const updateProjectStatus = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -273,9 +262,7 @@ export const updateProjectStatus = async (req, res) => {
   }
 };
 
-// ======================
 // Get single project by ID
-// ======================
 export const getProjectById = async (req, res) => {
   try {
     const { projectId } = req.params;

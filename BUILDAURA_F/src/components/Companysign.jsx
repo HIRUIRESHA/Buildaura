@@ -75,7 +75,6 @@ export default function CompanySign() {
 
       const data = res.data;
 
-      // ✅ Check backend response
       if (res.status === 201 || data.company) {
         alert(
           `✅ Company registered successfully!\nWelcome ${data.company?.name || companyForm.companyName}!\nYour Company ID: ${data.company?.companyId}`

@@ -11,7 +11,6 @@ const CompanyHome = () => {
   const { auth, hasCart, setHasCart } = useContext(AuthContext); 
   const user = auth?.user;
 
-  // Company mock data
   const companyData = {
     name: "BuildMaster Construction Ltd.",
     logo: "🏗️",
@@ -24,10 +23,9 @@ const CompanyHome = () => {
     rating: 4.9
   };
 
-  // Check backend if the logged-in company has a cart
   const checkCart = async () => {
     if (!user?.companyId) {
-      setHasCart(false); // ensure default false
+      setHasCart(false); 
       return;
     }
     try {
@@ -43,14 +41,12 @@ const CompanyHome = () => {
     }
   };
 
-  // ✅ Run whenever user changes (login/logout)
   useEffect(() => {
     checkCart();
   }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
-      {/* Background animations */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-20 animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full opacity-20 animate-pulse delay-1000"></div>
@@ -58,7 +54,6 @@ const CompanyHome = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-8">
-        {/* Header */}
         <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-full text-4xl mb-4 animate-bounce">
             🏗️
@@ -77,7 +72,6 @@ const CompanyHome = () => {
           </div>
         </header>
 
-        {/* Company Card */}
         <div className="max-w-6xl mx-auto mb-12">
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
             <div className="text-center mb-8">
@@ -130,7 +124,6 @@ const CompanyHome = () => {
           </div>
         </div>
 
-        {/* Cart Action */}
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-gradient-to-r from-orange-600/20 via-red-600/20 to-pink-600/20 backdrop-blur-lg rounded-3xl p-12 border border-orange-400/30 shadow-2xl">
             <div className="mb-8">
@@ -148,7 +141,6 @@ const CompanyHome = () => {
               </p>
             </div>
 
-            {/* Button */}
             <Link
               to="/companycart"
               className={`group relative inline-block font-bold py-6 px-12 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-4 ${

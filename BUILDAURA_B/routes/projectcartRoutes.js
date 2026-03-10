@@ -6,9 +6,7 @@ import Company from "../models/company.js";
 
 const router = express.Router();
 
-// ======================
 // POST /api/projectcart/submit
-// ======================
 router.post("/submit", async (req, res) => {
   try {
     const {
@@ -68,9 +66,7 @@ router.post("/submit", async (req, res) => {
   }
 });
 
-      // ======================
-      // GET /api/projectcart (Admin)
-      // ======================
+      
       router.get("/all", async (req, res) => {
         try {
           const { status, clientId, companyId } = req.query;
@@ -92,9 +88,7 @@ router.post("/submit", async (req, res) => {
         }
       });
 
-// ======================
-// GET /api/projectcart/client/:clientId
-// ======================
+// GET client/:clientId
 router.get("/client/:clientId", async (req, res) => {
   try {
     const { clientId } = req.params;
@@ -123,9 +117,8 @@ router.get("/client/:clientId", async (req, res) => {
   }
 });
 
-// ======================
-// GET /api/projectcart/company/:companyId
-// ======================
+// GET company/:companyId
+
 router.get("/company/:companyId", async (req, res) => {
   try {
     const { companyId } = req.params;
@@ -150,9 +143,7 @@ router.get("/company/:companyId", async (req, res) => {
   }
 });
 
-// ======================
-// GET /api/projectcart/:projectId
-// ======================
+
 router.get("/:projectId", async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -171,9 +162,7 @@ router.get("/:projectId", async (req, res) => {
   }
 });
 
-// ======================
-// PUT /api/projectcart/:projectId/status
-// ======================
+
 router.put("/:projectId/status", async (req, res) => {
   try {
     const { projectId } = req.params;

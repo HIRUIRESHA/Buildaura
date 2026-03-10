@@ -3,7 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { getCompanyProjects, updateProjectStatus } from "../services/projectCartServices";
 
 export default function CompanyProject() {
-  const { user } = useContext(AuthContext); // company user
+  const { user } = useContext(AuthContext); 
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -16,7 +16,6 @@ export default function CompanyProject() {
 
       setLoading(true);
       try {
-        // Use companyId if available, otherwise use _id
         const companyId = user._id || user.companyId;
         const data = await getCompanyProjects(companyId);
         
@@ -58,12 +57,10 @@ export default function CompanyProject() {
     }
   };
 
-  // Filter projects by status
   const filteredProjects = filter === "all" 
     ? projects 
     : projects.filter(project => project.status === filter);
 
-  // Get status badge color
   const getStatusColor = (status) => {
     switch (status) {
       case "pending":

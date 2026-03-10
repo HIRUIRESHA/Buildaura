@@ -142,7 +142,6 @@ export default function Project() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Header Section */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
             My Projects
@@ -152,7 +151,6 @@ export default function Project() {
 
        
 
-        {/* Action Button */}
         <div className="mb-8 flex justify-center">
           <button
             onClick={() => navigate("/projectcart")}
@@ -213,7 +211,6 @@ export default function Project() {
           </div>
         )}
 
-        {/* Content Section */}
         {loading ? (
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
             <LoadingSpinner />
@@ -305,7 +302,6 @@ export default function Project() {
                   key={projectId}
                   className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
-                  {/* Project Header */}
                   <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-6">
                     <div className="flex items-center justify-between">
                       <h2 className="font-bold text-xl text-white truncate mr-4">
@@ -368,7 +364,6 @@ export default function Project() {
                         </div>
                       </div>
 
-                      {/* Description */}
                       <div className="bg-gray-50 rounded-lg p-4">
                         <p className="text-sm text-gray-600 line-clamp-3">
                           {project.description || "No description provided"}
@@ -377,7 +372,6 @@ export default function Project() {
                     </div>
                   </div>
 
-                  {/* Action Button */}
                   <div className="px-6 pb-6">
                     <button
                       onClick={() => navigate(`/projectdetails/${projectId}`)}

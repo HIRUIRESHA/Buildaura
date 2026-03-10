@@ -99,7 +99,6 @@ function Services() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
@@ -113,7 +112,6 @@ function Services() {
         </div>
       </div>
 
-      {/* Services Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service) => (
@@ -121,7 +119,6 @@ function Services() {
               key={service.id}
               className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
             >
-              {/* Card Header */}
               <div className={`bg-gradient-to-r ${service.color} p-6 text-white`}>
                 <div className="flex items-center gap-4">
                   <div className="text-4xl">{service.icon}</div>
@@ -129,11 +126,9 @@ function Services() {
                 </div>
               </div>
 
-              {/* Card Content */}
               <div className="p-6">
                 <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
 
-                {/* Features List */}
                 <div className="space-y-3">
                   <h4 className="font-semibold text-gray-800 mb-3">Key Features:</h4>
                   {service.features.map((feature, index) => (
@@ -144,7 +139,6 @@ function Services() {
                   ))}
                 </div>
 
-                {/* Learn More Button */}
                 <button
                   className={`mt-6 w-full bg-gradient-to-r ${service.color} text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition-opacity duration-200`}
                 >
@@ -156,7 +150,6 @@ function Services() {
         </div>
       </div>
 
-      {/* CTA Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
@@ -176,7 +169,6 @@ function Services() {
         </div>
       </div>
 
-      {/* Stats Section */}
       <div className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">

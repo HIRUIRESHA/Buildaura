@@ -1,4 +1,3 @@
-// src/pages/EngineerDash.jsx
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,18 +8,18 @@ import { getCarts } from "../services/companyCartServices";
 const EngDash = () => {
   const [activeTab, setActiveTab] = useState("projects");
 
-  // =========================
-  // Projects (view all)
-  // =========================
+  
+  
+
   const [projects, setProjects] = useState([]);
   const [loadingProjects, setLoadingProjects] = useState(false);
-  const [updatingProjectId, setUpdatingProjectId] = useState(null); // To disable dropdown during update
+  const [updatingProjectId, setUpdatingProjectId] = useState(null); 
 
   const fetchProjects = async () => {
     try {
       setLoadingProjects(true);
-      const data = await getAllProjects(); // fetch all projects
-      setProjects(data.docs || []);        // paginate result in `docs`
+      const data = await getAllProjects(); 
+      setProjects(data.docs || []);        
     } catch (err) {
       console.error("Fetch projects error:", err);
       toast.error("Failed to fetch projects");
@@ -32,7 +31,7 @@ const EngDash = () => {
   const handleUpdateStatus = async (projectId, status) => {
     try {
       setUpdatingProjectId(projectId);
-      // Pass just status string as per your updated requirement
+      
       await updateProjectStatus(projectId, status);
       toast.success("Project status updated");
       fetchProjects();
@@ -44,9 +43,7 @@ const EngDash = () => {
     }
   };
 
-  // =========================
-  // Company Carts
-  // =========================
+
   const [companyCarts, setCompanyCarts] = useState([]);
   const fetchCarts = async () => {
     try {
@@ -58,9 +55,7 @@ const EngDash = () => {
     }
   };
 
-  // =========================
-  // Modal (currently not used but placeholder)
-  // =========================
+ 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
@@ -73,17 +68,13 @@ const EngDash = () => {
     setModalOpen(false);
   };
 
-  // =========================
-  // Fetch data on mount
-  // =========================
+ 
   useEffect(() => {
     fetchProjects();
     fetchCarts();
   }, []);
 
-  // =========================
-  // Tab content renderer
-  // =========================
+ 
   const renderTabContent = () => {
     switch (activeTab) {
       case "projects":
@@ -163,7 +154,6 @@ const EngDash = () => {
                     <td className="border px-2 py-1">{cart.location}</td>
                     <td className="border px-2 py-1">{cart.specialization}</td>
                     <td className="border px-2 py-1">
-                      {/* No actions */}
                     </td>
                   </tr>
                 ))

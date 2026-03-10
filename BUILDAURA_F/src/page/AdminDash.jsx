@@ -1,5 +1,4 @@
 
-// src/pages/AdminDash.jsx
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,9 +11,7 @@ import { getClientProjects, getAllProjects, updateProjectStatus } from "../servi
 const AdminDash = () => {
   const [activeTab, setActiveTab] = useState("users");
 
-  // =========================
-  // Users
-  // =========================
+
   const [users, setUsers] = useState([]);
   const fetchUsers = async () => {
     try {
@@ -38,9 +35,7 @@ const AdminDash = () => {
     }
   };
 
-  // =========================
-  // Companies
-  // =========================
+  
   const [companies, setCompanies] = useState([]);
   const fetchCompanies = async () => {
     try {
@@ -64,9 +59,7 @@ const AdminDash = () => {
     }
   };
 
-  // =========================
-  // Company Carts
-  // =========================
+
   const [companyCarts, setCompanyCarts] = useState([]);
   const fetchCarts = async () => {
     try {
@@ -90,9 +83,7 @@ const AdminDash = () => {
     }
   };
 
-  // =========================
-  // Projects
-  // =========================
+  
   const [projects, setProjects] = useState([]);
   const fetchProjects = async () => {
     try {
@@ -135,9 +126,7 @@ const AdminDash = () => {
     }
   };
 
-  // =========================
-  // Modal
-  // =========================
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
@@ -150,9 +139,7 @@ const AdminDash = () => {
     setModalOpen(false);
   };
 
-  // =========================
-  // Fetch all data on mount
-  // =========================
+  
   useEffect(() => {
     fetchUsers();
     fetchCompanies();
@@ -160,7 +147,6 @@ const AdminDash = () => {
     fetchProjects();
   }, []);
 
-  // Status badge component
   const StatusBadge = ({ status }) => {
     const getStatusColor = (status) => {
       switch (status) {
@@ -192,7 +178,6 @@ const AdminDash = () => {
     switch (activeTab) {
       case "users":
         return (
-          // ... same JSX as your original "users" tab
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -456,7 +441,6 @@ const AdminDash = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100">
       <ToastContainer position="top-right" theme="light" />
       <div className="p-6 max-w-7xl mx-auto space-y-6">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
             Admin Dashboard
@@ -464,7 +448,6 @@ const AdminDash = () => {
           <p className="text-gray-600 text-lg">Manage your platform with ease</p>
         </div>
 
-        {/* Tab Navigation */}
         <div className="flex justify-center mb-8">
           <div className="bg-white rounded-2xl shadow-lg p-2 flex gap-1 border border-gray-200">
             {Object.entries(tabConfig).map(([tab, config]) => (
@@ -484,12 +467,10 @@ const AdminDash = () => {
           </div>
         </div>
 
-        {/* Tab Content */}
         <div className="transition-all duration-300 ease-in-out">
           {renderTabContent()}
         </div>
 
-        {/* Modal */}
         {modalOpen && modalContent && (
           <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">

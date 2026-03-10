@@ -1,4 +1,3 @@
-// src/pages/Employee.jsx
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
 
-  // Fetch company employees
   const fetchEmployees = async () => {
     try {
       const companyData = JSON.parse(localStorage.getItem("company"));
@@ -37,7 +35,6 @@ const Employee = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
       <ToastContainer position="top-right" autoClose={3000} />
       
-      {/* Header Section */}
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center justify-between">
@@ -74,7 +71,6 @@ const Employee = () => {
           </div>
         ) : (
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-            {/* Mobile view - Cards */}
             <div className="md:hidden">
               <div className="p-4 space-y-4">
                 {employees.map((emp, index) => (
@@ -124,7 +120,6 @@ const Employee = () => {
               </div>
             </div>
 
-            {/* Desktop view - Table */}
             <div className="hidden md:block overflow-x-auto">
               <table className="min-w-full">
                 <thead className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">

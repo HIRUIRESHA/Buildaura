@@ -9,7 +9,7 @@ function Navbar() {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { auth, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation(); // track current path
+  const location = useLocation(); 
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -19,7 +19,6 @@ function Navbar() {
     navigate('/');
   };
 
-  // Determine links based on role
   let links = [];
   if (auth?.isLoggedIn) {
     switch (auth.role) {
@@ -51,7 +50,8 @@ function Navbar() {
         links = [];
     }
   } else {
-    // Public links
+
+    // Public
     links = [
       { name: 'Home', to: '/' },
       { name: 'About Us', to: '/about' },
@@ -63,7 +63,6 @@ function Navbar() {
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center space-x-2">
           <img src={logo} alt="Logo" className="h-16 w-16 object-contain" />
           <span className="text-xl font-bold text-orange-600">BuilAura</span>

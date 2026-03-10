@@ -1,4 +1,3 @@
-// models/projectcart.js
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
@@ -69,7 +68,7 @@ const projectCartSchema = new Schema(
       required: [true, "Budget is required"], 
       min: [1, "Budget must be greater than 0"],
       max: [10000000, "Budget cannot exceed 10,000,000"],
-      set: value => parseFloat(value) // Ensure it's always a number
+      set: value => parseFloat(value) 
     },
 
     description: { 
@@ -98,7 +97,7 @@ const projectCartSchema = new Schema(
       default: "pending" 
     },
 
-    // Optional: keep track of status changes
+    // keep track of status changes
     statusHistory: [
       {
         status: { 
@@ -124,7 +123,7 @@ const projectCartSchema = new Schema(
       }
     ],
 
-    // Additional useful fields
+   
     estimatedEndDate: {
       type: Date,
       validate: {
@@ -155,7 +154,6 @@ const projectCartSchema = new Schema(
       default: true
     },
 
-    // Additional fields for better tracking
     actualEndDate: {
       type: Date,
       validate: {
@@ -196,10 +194,10 @@ const projectCartSchema = new Schema(
   }
 );
 
-// Add pagination plugin
-projectCartSchema.plugin(mongoosePaginate);
+// // Add pagination plugin
+// projectCartSchema.plugin(mongoosePaginate);
 
-// Virtual for project duration (in days)
+//  project duration (in days)
 projectCartSchema.virtual('durationDays').get(function() {
   if (this.estimatedEndDate && this.startDate) {
     const diffTime = Math.abs(this.estimatedEndDate - this.startDate);
@@ -208,7 +206,7 @@ projectCartSchema.virtual('durationDays').get(function() {
   return null;
 });
 
-// Virtual for actual duration if project is completed
+// actual duration if project is completed
 projectCartSchema.virtual('actualDurationDays').get(function() {
   if (this.actualEndDate && this.startDate) {
     const diffTime = Math.abs(this.actualEndDate - this.startDate);
@@ -217,12 +215,12 @@ projectCartSchema.virtual('actualDurationDays').get(function() {
   return null;
 });
 
-// Virtual for client name
+// client name
 projectCartSchema.virtual('clientName').get(function() {
   return this.client ? `${this.client.firstName} ${this.client.lastName}` : '';
 });
 
-// Virtual for company name
+// company name
 projectCartSchema.virtual('companyName').get(function() {
   return this.company ? this.company.name : '';
 });
@@ -273,27 +271,27 @@ projectCartSchema.pre('save', function(next) {
   next();
 });
 
-// Static method to get projects by status
+// get projects by status
 projectCartSchema.statics.findByStatus = function(status) {
   return this.find({ status }).populate("client company");
 };
 
-// Static method to get projects by client
+// get projects by client
 projectCartSchema.statics.findByClient = function(clientId) {
   return this.find({ client: clientId }).populate("client company");
 };
 
-// Static method to get projects by company
+// get projects by company
 projectCartSchema.statics.findByCompany = function(companyId) {
   return this.find({ company: companyId }).populate("client company");
 };
 
-// Static method to get active projects
+// get active projects
 projectCartSchema.statics.findActive = function() {
   return this.find({ isActive: true }).populate("client company");
 };
 
-// Instance method to update progress
+// update progress
 projectCartSchema.methods.updateProgress = function(progress, userId, notes = "") {
   this.progress = progress;
   this.statusHistory.push({
@@ -305,7 +303,7 @@ projectCartSchema.methods.updateProgress = function(progress, userId, notes = ""
   return this.save();
 };
 
-// Instance method to complete project
+// complete project
 projectCartSchema.methods.completeProject = function(userId, notes = "") {
   this.status = "completed";
   this.progress = 100;

@@ -104,7 +104,6 @@ function ProjectCart() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 py-8">
       <div className="max-w-3xl mx-auto px-6">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-2">
             Submit New Project
@@ -112,7 +111,6 @@ function ProjectCart() {
           <p className="text-gray-600">Create a new project proposal with detailed information</p>
         </div>
 
-        {/* Main Form Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
           <div className="bg-gradient-to-r from-orange-500 to-amber-500 p-6">
             <h2 className="text-2xl font-bold text-white flex items-center">
@@ -128,7 +126,6 @@ function ProjectCart() {
               <LoadingSpinner />
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Error Message */}
                 {error && (
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
                     <svg className="w-5 h-5 text-red-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -138,9 +135,7 @@ function ProjectCart() {
                   </div>
                 )}
 
-                {/* Form Grid */}
                 <div className="grid md:grid-cols-2 gap-6">
-                  {/* Project Name */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Project Name *
@@ -162,7 +157,6 @@ function ProjectCart() {
                     </div>
                   </div>
 
-                  {/* Client Selection */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Client *
@@ -192,7 +186,6 @@ function ProjectCart() {
                     </div>
                   </div>
 
-                  {/* Company Selection */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Company *
@@ -222,7 +215,6 @@ function ProjectCart() {
                     </div>
                   </div>
 
-                  {/* Start Date */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Start Date *
@@ -243,7 +235,6 @@ function ProjectCart() {
                     </div>
                   </div>
 
-                  {/* Budget */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Budget ($) *
@@ -265,7 +256,6 @@ function ProjectCart() {
                     </div>
                   </div>
 
-                  {/* Project Type */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Project Type
@@ -293,7 +283,6 @@ function ProjectCart() {
                     </div>
                   </div>
 
-                  {/* Description */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Project Description *
@@ -316,7 +305,6 @@ function ProjectCart() {
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <div className="pt-6 border-t border-gray-100">
                   <button
                     type="submit"

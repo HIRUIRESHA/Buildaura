@@ -31,14 +31,13 @@ app.post('/webhooks/clerk', express.raw({ type: 'application/json' }), (req, res
     }
 
     const event = verifyWebhook({
-      payload: req.body,      // raw body from express.raw()
-      secret: webhookSecret,  // your webhook signing secret from .env
+      payload: req.body,      
+      secret: webhookSecret,  
       header: signature,
     });
 
     console.log('Clerk Webhook Event:', event);
 
-    // Handle webhook events here (user.created, user.updated, etc.)
     res.status(200).json({ received: true });
   } catch (err) {
     console.error('Clerk webhook error:', err);
@@ -63,18 +62,17 @@ app.use('/api/clients', clientRoutes);
 // Test route
 app.get('/', (req, res) => res.send('API Working'));
 
-// 404 Handler
+// 404 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });
 });
 
-// Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, message: 'Server error' });
 });
 
-// Start server
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

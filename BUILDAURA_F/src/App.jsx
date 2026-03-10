@@ -1,11 +1,9 @@
-// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Navbar imports
 import Navbar from './components/Navbar';              
 import AdminNavbar from './navbars/AdminNavbar';      
 import CompanyNavbar from './navbars/CompanyNavbar';  
@@ -13,7 +11,6 @@ import EngineerNavbar from './navbars/EngineerNavbar';
 import ClientNavbar from './navbars/ClientNavbar';    
 import Footer from './components/Footer';
 
-// Page imports
 import Home from './components/Home';
 import Companies from './components/Companies';
 import Services from './components/Services'; 
@@ -30,7 +27,6 @@ import ClientHome from './homepages/ClientHome';
 import EngHome from './homepages/EngHome';
 import Project from './page/Project';
 import ProjectCart from "./page/ProjectCart"; 
-import CompanyProject from './page/CompanyProject';
 import EngDash from './page/EngDash';
 import CompanyDash from './page/CompanyDash';
 import Employee from './page/Employee';
@@ -39,12 +35,11 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <NavbarSwitch />  {/* Role-based Navbar */}
+        <NavbarSwitch /> 
         <Routes>
-          {/* Public Routes */}
           <Route 
             path="/" 
-            element={<RootRedirect />}   // ✅ Root redirect logic
+            element={<RootRedirect />}   
           />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
@@ -54,13 +49,11 @@ function App() {
           <Route path="/companysign" element={<Companysign />} />
           <Route path="/userregister" element={<Userregister />} />
 
-          {/* Admin Routes */}
           <Route 
             path="/admin/dash" 
             element={<RequireRole role="admin"><AdminDash /></RequireRole>} 
           />
 
-          {/* Company Routes */}
           <Route 
             path="/company/home" 
             element={<RequireRole role="company"><CompanyHome /></RequireRole>} 
@@ -82,7 +75,6 @@ function App() {
             element={<RequireRole role="company"><CompanyProject /></RequireRole>} 
           /> */}
 
-          {/* Eng Routes */}
           <Route 
             path="/eng/home" 
             element={<RequireRole role="engineer"><EngHome /></RequireRole>} 
@@ -110,7 +102,6 @@ function App() {
             element={<RequireRole role="client"><ProjectCart /></RequireRole>} 
           />
 
-          {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Footer />
@@ -120,7 +111,6 @@ function App() {
   );
 }
 
-// ✅ Root redirect logic
 function RootRedirect() {
   const { auth } = React.useContext(AuthContext);
 
@@ -137,24 +127,22 @@ function RootRedirect() {
     return <Navigate to="/client/home" replace />;
   }
 
-  return <Home />; // Default for public
+  return <Home />; 
 }
 
-// Role-based Navbar switch
 function NavbarSwitch() {
   const { auth } = React.useContext(AuthContext);
 
-  console.log("Current auth role:", auth.role); // Debugging
+  console.log("Current auth role:", auth.role); 
 
   if (auth.isLoggedIn && auth.role === "admin") return <AdminNavbar />;
   if (auth.isLoggedIn && auth.role === "company") return <CompanyNavbar />;
   if (auth.isLoggedIn && auth.role === "engineer") return <EngineerNavbar />;
   if (auth.isLoggedIn && auth.role === "client") return <ClientNavbar />;
 
-  return <Navbar />; // Public Navbar
+  return <Navbar />; 
 }
 
-// Protect routes based on role
 function RequireRole({ children, role }) {
   const { auth } = React.useContext(AuthContext);
   if (!auth.isLoggedIn || auth.role !== role) {

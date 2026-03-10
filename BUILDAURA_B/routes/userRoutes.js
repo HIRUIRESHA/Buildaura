@@ -6,9 +6,9 @@ import Company from "../models/company.js";
 
 const router = express.Router();
 
-// =========================
-// 1️⃣ Register user
-// =========================
+
+//  Register user
+
 router.post("/register", async (req, res) => {
   try {
     const { firstName, lastName, email, password, phoneNumber, role, company } = req.body;
@@ -48,9 +48,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// =========================
-// 2️⃣ Login using userId
-// =========================
+
+//  Login using userId
+
 router.post("/login", async (req, res) => {
   try {
     const { userId, password } = req.body;
@@ -77,13 +77,9 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// =========================
-// 3️⃣ Removed approve/reject routes
-// =========================
 
-// =========================
-// 4️⃣ Edit user (admin)
-// =========================
+//  Edit user (admin)
+
 router.put("/edit/:id", async (req, res) => {
   try {
     const updatedData = req.body;
@@ -97,9 +93,9 @@ router.put("/edit/:id", async (req, res) => {
   }
 });
 
-// =========================
-// 5️⃣ Delete user (admin)
-// =========================
+
+//  Delete user (admin)
+
 router.delete("/delete/:id", async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -112,9 +108,7 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
-// =========================
-// 6️⃣ Get all users (admin dashboard)
-// =========================
+//  Get all users (admin dashboard)
 router.get("/all", async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: -1 });
@@ -125,9 +119,7 @@ router.get("/all", async (req, res) => {
   }
 });
 
-// =========================
-// 7️⃣ Get user by userId
-// =========================
+//  Get user by userId
 router.get("/get/:userId", async (req, res) => {
   try {
     const user = await User.findOne({ userId: req.params.userId });
@@ -145,19 +137,17 @@ router.get("/company/:companyIdentifier", async (req, res) => {
     const { companyIdentifier } = req.params;
     let company;
 
-    // 1️⃣ Check if companyIdentifier is a valid MongoDB ObjectId
     const isObjectId = /^[0-9a-fA-F]{24}$/.test(companyIdentifier);
 
     if (isObjectId) {
       company = await Company.findById(companyIdentifier);
     } else {
-      // Otherwise, search by companyId string like CMP-0001
       company = await Company.findOne({ companyId: companyIdentifier.toUpperCase() });
     }
 
     if (!company) return res.status(404).json({ success: false, message: "Company not found" });
 
-    // 2️⃣ Find engineers for this company
+    //  Find engineers for this company
     const employees = await User.find({ company: company._id, role: "engineer" })
       .select("firstName lastName email phoneNumber role userId")
       .sort({ createdAt: -1 });

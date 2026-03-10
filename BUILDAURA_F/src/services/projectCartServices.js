@@ -1,8 +1,6 @@
 const API_URL = "http://localhost:5000/api/projectcart";
 
-// ======================
-// Submit a new project
-// ======================
+
 export const submitProject = async (projectData) => {
   try {
     const clientId =
@@ -37,9 +35,7 @@ export const submitProject = async (projectData) => {
   }
 };
 
-// ======================
-// Get projects for a client
-// ======================
+
 export const getClientProjects = async (clientId) => {
   try {
     const id =
@@ -63,9 +59,7 @@ export const getClientProjects = async (clientId) => {
   }
 };
 
-// ======================
-// Get projects for a company
-// ======================
+
 export const getCompanyProjects = async (companyId) => {
   try {
     const id = companyId || JSON.parse(localStorage.getItem("auth"))?.user?._id;
@@ -85,12 +79,9 @@ export const getCompanyProjects = async (companyId) => {
   }
 };
 
-// ======================
-// Get all projects (Admin)
-// ======================
+
 export const getAllProjects = async (filters = {}) => {
   try {
-    // Ensure we use /all route for admin
     const query = new URLSearchParams(filters).toString();
     const url = query ? `${API_URL}/all?${query}` : `${API_URL}/all`;
 
@@ -108,9 +99,7 @@ export const getAllProjects = async (filters = {}) => {
   }
 };
 
-// ======================
-// Get project by ID
-// ======================
+
 export const getProjectById = async (projectId) => {
   try {
     const res = await fetch(`${API_URL}/${projectId}`, {
@@ -125,15 +114,13 @@ export const getProjectById = async (projectId) => {
   }
 };
 
-// ======================
-// Update project status
-// ======================
-export const updateProjectStatus = async (projectId, status, notes = "") => {
+
+export const updateProjectStatus = async (projectId, status, engineerId = null, notes = "") => {
   try {
     const res = await fetch(`${API_URL}/${projectId}/status`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status, notes }),
+      body: JSON.stringify({ status, engineerId, notes }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Failed to update status");
@@ -144,16 +131,29 @@ export const updateProjectStatus = async (projectId, status, notes = "") => {
   }
 };
 
-// ======================
-// Delete project (NOT IMPLEMENTED in backend yet)
-// ======================
+
+export const assignEngineerToProject = async (projectId, engineerId) => {
+  try {
+    const res = await fetch(`${API_URL}/assign/${projectId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ engineerId }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to assign engineer");
+    return data;
+  } catch (err) {
+    console.error("assignEngineerToProject error:", err.message);
+    throw err;
+  }
+};
+
+
 export const deleteProject = async (projectId) => {
   throw new Error("deleteProject route not implemented in backend");
 };
 
-// ======================
-// Update project (NOT IMPLEMENTED in backend yet)
-// ======================
+
 export const updateProject = async (projectId, updateData) => {
   throw new Error("updateProject route not implemented in backend");
 };

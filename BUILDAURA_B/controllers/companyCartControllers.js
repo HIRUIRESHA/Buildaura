@@ -1,20 +1,16 @@
-// companyCartControllers.js
 import CompanyCart from "../models/companycart.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
-// ==========================
+
 // Configure Cloudinary
-// ==========================
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ==========================
-// Helper: upload buffer to Cloudinary
-// ==========================
+// upload buffer to Cloudinary
 const uploadToCloudinary = (fileBuffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -28,9 +24,7 @@ const uploadToCloudinary = (fileBuffer) => {
   });
 };
 
-// ==========================
 // Create a new company cart
-// ==========================
 export const createCompanyCart = async (req, res) => {
   try {
     const {
@@ -45,7 +39,7 @@ export const createCompanyCart = async (req, res) => {
       category,
     } = req.body;
 
-    // ✅ Prevent duplicate cart
+    //  Prevent duplicate cart
     const existingCart = await CompanyCart.findOne({ companyId });
     if (existingCart) {
       return res
@@ -83,9 +77,7 @@ export const createCompanyCart = async (req, res) => {
   }
 };
 
-// ==========================
 // Get all company carts
-// ==========================
 export const getCompanyCarts = async (req, res) => {
   try {
     const carts = await CompanyCart.find();
@@ -98,9 +90,7 @@ export const getCompanyCarts = async (req, res) => {
   }
 };
 
-// ==========================
 // Get a company cart by MongoDB _id
-// ==========================
 export const getCompanyCartById = async (req, res) => {
   try {
     const cart = await CompanyCart.findById(req.params.id);
@@ -115,9 +105,7 @@ export const getCompanyCartById = async (req, res) => {
   }
 };
 
-// ==========================
-// ✅ Get a company cart by companyId (for React button logic)
-// ==========================
+//  Get a company cart by companyId 
 export const getCompanyCartByCompanyId = async (req, res) => {
   try {
     const { companyId } = req.params;
@@ -133,9 +121,7 @@ export const getCompanyCartByCompanyId = async (req, res) => {
   }
 };
 
-// ==========================
 // Update a company cart
-// ==========================
 export const updateCompanyCart = async (req, res) => {
   try {
     const cart = await CompanyCart.findById(req.params.id);
@@ -176,9 +162,7 @@ export const updateCompanyCart = async (req, res) => {
   }
 };
 
-// ==========================
 // Delete a company cart
-// ==========================
 export const deleteCompanyCart = async (req, res) => {
   try {
     const cart = await CompanyCart.findById(req.params.id);

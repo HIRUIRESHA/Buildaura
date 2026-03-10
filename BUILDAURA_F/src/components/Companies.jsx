@@ -1,4 +1,3 @@
-// src/components/Companies.jsx
 import React, { useState, useEffect } from "react";
 import { Building2, MapPin, Star, ArrowRight, Users, CheckCircle } from "lucide-react";
 import { getCarts } from "../services/companyCartServices";
@@ -34,7 +33,7 @@ const Companies = () => {
     { id: "renovation", label: "Renovation & Remodeling" },
   ];
 
-  // Filter buttons with counts
+  // Filter 
   const filters = [
     { id: "all", label: "All Companies", count: carts.length },
     ...categoryList.map((cat) => ({
@@ -44,7 +43,6 @@ const Companies = () => {
     })),
   ];
 
-  // Filter logic
   const filteredCarts = carts.filter((cart) => {
     const matchesSearch =
       cart.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -105,7 +103,6 @@ const Companies = () => {
           </div>
         </div>
 
-        {/* No companies message */}
         {loading && <p className="text-center py-16">Loading company carts...</p>}
         {!loading && filteredCarts.length === 0 && (
           <div className="text-center py-16">

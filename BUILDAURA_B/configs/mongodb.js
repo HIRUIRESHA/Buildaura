@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Connect to the MongoDB database
 const connectDB = async () => {
   try {
     mongoose.connection.on("connected", () =>
@@ -8,11 +7,11 @@ const connectDB = async () => {
     );
 
     await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: "buildaura", // specify database name explicitly
+      dbName: "buildaura", // db name
     });
   } catch (error) {
     console.error("Database connection error:", error);
-    process.exit(1); // stop server if DB fails
+    process.exit(1); 
   }
 };
 

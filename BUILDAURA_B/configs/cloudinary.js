@@ -1,4 +1,3 @@
-// config/cloudinary.js
 import { v2 as cloudinary } from "cloudinary";
 
 // ---------- Cloudinary Configuration ----------
@@ -15,14 +14,16 @@ cloudinary.config({
  * @param {"image" | "raw" | "video"} type - Resource type ("image" | "raw" | "video")
  * @returns {Promise<object>} - Cloudinary upload response
  */
+
+
 export const uploadToCloudinary = async (filePath, type = "image") => {
   try {
     const result = await cloudinary.uploader.upload(filePath, {
-      resource_type: type, // "image" for images, "raw" for PDFs/docs, "video" for videos
-      folder: "buildaura_projects", // optional: organize uploads in a folder
-      use_filename: true,          // keep original filename
-      unique_filename: false,      // don't append random string
-      overwrite: true,             // overwrite if same filename exists
+      resource_type: type, 
+      folder: "buildaura_projects",
+      use_filename: true,          
+      unique_filename: false,      
+      overwrite: true,             
     });
     return result;
   } catch (error) {
@@ -31,5 +32,4 @@ export const uploadToCloudinary = async (filePath, type = "image") => {
   }
 };
 
-// ---------- Default Export ----------
 export default cloudinary;

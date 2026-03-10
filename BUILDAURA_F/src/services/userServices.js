@@ -1,6 +1,5 @@
-const API_URL = "http://localhost:5000/api/users"; // Backend base URL
+const API_URL = "http://localhost:5000/api/users"; 
 
-// 1️⃣ Register user
 export const registerUser = async (userData) => {
   const response = await fetch(`${API_URL}/register`, {
     method: "POST",
@@ -10,7 +9,7 @@ export const registerUser = async (userData) => {
   return await response.json();
 };
 
-// 2️⃣ Delete user (admin)
+//  Delete user (admin)
 export const deleteUser = async (userId) => {
   const response = await fetch(`${API_URL}/delete/${userId}`, {
     method: "DELETE",
@@ -18,7 +17,7 @@ export const deleteUser = async (userId) => {
   return await response.json();
 };
 
-// 3️⃣ Edit user (admin)
+
 export const editUser = async (userId, updatedData) => {
   const response = await fetch(`${API_URL}/edit/${userId}`, {
     method: "PUT",
@@ -28,7 +27,7 @@ export const editUser = async (userId, updatedData) => {
   return await response.json();
 };
 
-// 4️⃣ Get all users (admin dashboard)
+//  Get all users (admin dashboard)
 export const getUsers = async () => {
   const response = await fetch(`${API_URL}/all`, {
     method: "GET",
@@ -37,7 +36,7 @@ export const getUsers = async () => {
   return await response.json();
 };
 
-// 5️⃣ Get all engineers for a specific company
+//  Get all engineers for a specific company
 export const getCompanyEngineers = async (companyId) => {
   const response = await fetch(`${API_URL}/company/${companyId}`, {
     method: "GET",

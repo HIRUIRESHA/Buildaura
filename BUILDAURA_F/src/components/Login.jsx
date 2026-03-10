@@ -52,19 +52,17 @@ export default function Login() {
       if (res.ok) {
         let userRole = form.role;
 
-        // Identify client vs engineer based on ID prefix
+        // Identify client vs engineer
         if (form.role === "user") {
           const id = data.user?.userId || "";
           if (id.startsWith("ENG-")) userRole = "engineer";
           else if (id.startsWith("CLI-")) userRole = "client";
-          else userRole = "client"; // fallback
+          else userRole = "client"; 
         }
 
-        // ✅ Store JWT token if provided
         if (data.token) localStorage.setItem("token", data.token);
 
-        // -----------------------------
-        // ✅ Store MongoDB _id for project/cart fetches
+        // Store MongoDB _id for project/cart fetches
         if (data.user?._id) {
           localStorage.setItem("userId", data.user._id);
         } else if (data.company?._id) {
@@ -72,7 +70,6 @@ export default function Login() {
         }
         // -----------------------------
 
-        // Save login info in global context
         login({ ...data.user, role: userRole });
 
         // Store company info for company login
@@ -87,7 +84,7 @@ export default function Login() {
           );
         }
 
-        // Redirect based on role
+        // Redirect
         if (userRole === "admin") navigate("/admin/users");
         else if (userRole === "company") navigate("/company/home");
         else if (userRole === "engineer") navigate("/eng/home");
@@ -133,7 +130,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-white to-orange-800 p-4">
-      {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse animation-delay-2000"></div>
@@ -141,7 +137,6 @@ export default function Login() {
       </div>
 
       <div className="relative z-10 bg-black/10 backdrop-blur-xl border border-black/20 shadow-2xl rounded-3xl p-8 w-full max-w-md">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-black to-orange-500 rounded-full flex items-center justify-center text-3xl">
             🚀
@@ -151,7 +146,7 @@ export default function Login() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Role Selection */}
+          {/* Role Select */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-black-300">Select Role</label>
             <div className="relative">
@@ -173,7 +168,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Role Indicator */}
           <div className="flex items-center justify-center">
             <div className={`px-4 py-2 rounded-full bg-gradient-to-r ${getRoleColor(form.role)} text-white text-sm font-medium flex items-center gap-2`}>
               <span>{getRoleIcon(form.role)}</span>
@@ -181,7 +175,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Identifier Input */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-black-300">
               {form.role === "admin" ? "Email Address" : form.role === "user" ? "User ID" : "Company ID"}
@@ -258,7 +251,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Additional Decorative Elements */}
       <div className="absolute top-10 left-10 w-2 h-2 bg-white rounded-full opacity-50 animate-ping"></div>
       <div className="absolute top-20 right-20 w-1 h-1 bg-pink-300 rounded-full opacity-75 animate-pulse"></div>
       <div className="absolute bottom-20 left-20 w-1.5 h-1.5 bg-blue-300 rounded-full opacity-60 animate-bounce"></div>
